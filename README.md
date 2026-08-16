@@ -35,6 +35,7 @@ This ROM is a **64-bit** build that has been heavily debloated and tweaked for t
 * **Lighter Keyboard:** Replaced the heavy default AOSP keyboard with a much lighter, faster version.
 * **Audio Boost:** Natively boosted the system sound volume.
 * **Classic Hardware Keys:** Restored the old, highly requested menu button behavior (**1 Press** = Recents Panel, **Long Press** = Split-screen multitasking).
+* **Security Patch Spoofed:** Spoofed the Android security patch date to the latest available date. *Note: This is purely to bypass artificial requirements and trick modern apps into installing. It does not actually contain upstream security fixes.*
 
 ### Under-The-Hood Tweaks
 * **3-in-1 Flash:** The `fix_baseband` patch (for cellular/RIL) and the custom kernel are already baked directly into this ROM. One flash gets you everything.
