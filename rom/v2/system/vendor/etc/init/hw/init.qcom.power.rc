@@ -1,0 +1,80 @@
+on enable-low-power
+    start qcom-mem
+
+    # HMP scheduler load tracking settings
+    write /proc/sys/kernel/sched_window_stats_policy 3
+    write /proc/sys/kernel/sched_ravg_hist_size 3
+
+    # HMP Task packing settings for 8916
+    write /proc/sys/kernel/sched_small_task 20
+    write /proc/sys/kernel/sched_mostly_idle_load 30
+    write /proc/sys/kernel/sched_mostly_idle_nr_run 3
+
+    write /sys/module/msm_thermal/core_control/enabled 0
+    write /sys/devices/system/cpu/cpu0/online 1
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "interactive"
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 200000
+    write /sys/module/msm_thermal/core_control/enabled 1
+
+    write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay "25000 1094400:50000"
+    write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 95
+    write /sys/devices/system/cpu/cpufreq/interactive/timer_rate 40000
+    
+    # Cap standard boost at 800MHz instead of 1.2GHz
+    write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 800000
+    
+    write /sys/devices/system/cpu/cpufreq/interactive/io_is_busy 0
+    
+    # Progressive Load Stepping: 45%->400MHz | 60%->800MHz | 75%->998MHz | 88%->1.09GHz | 95%->1.2GHz
+    write /sys/devices/system/cpu/cpufreq/interactive/target_loads "45 400000:60 800000:75 998400:88 1094400:95"
+    write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 40000
+    write /sys/devices/system/cpu/cpufreq/interactive/max_freq_hysteresis 40000
+
+    # bring all CPUs online
+    write /sys/devices/system/cpu/cpu1/online 1
+    write /sys/devices/system/cpu/cpu2/online 1
+    write /sys/devices/system/cpu/cpu3/online 1
+
+    write /sys/devices/system/cpu/cpu0/core_ctl/min_cpus 1
+    write /sys/devices/system/cpu/cpu0/core_ctl/max_cpus 4
+    # WAKE SLOWER: Require 85% load across active cores before waking another
+    write /sys/devices/system/cpu/cpu0/core_ctl/busy_up_thres 85
+    # SLEEP SOONER: Turn off extra cores as soon as load drops below 55%
+    write /sys/devices/system/cpu/cpu0/core_ctl/busy_down_thres 55
+    # SLEEP FASTER: Wait only 50ms (instead of 100ms) before killing an idle core
+    write /sys/devices/system/cpu/cpu0/core_ctl/offline_delay_ms 50
+    write /sys/devices/system/cpu/cpu0/core_ctl/is_big_cluster 0
+    # TASK RESISTANCE: Require 5 active tasks (instead of 4) to force cores awake
+    write /sys/devices/system/cpu/cpu0/core_ctl/task_thres 5
+
+    # Enable low power modes
+    write /sys/module/lpm_levels/parameters/sleep_disabled 0
+
+    # Set RPS mask
+    write /sys/class/net/rmnet0/queues/rx-0/rps_cpus 2
+
+    # add a cpuset for the camera daemon
+    # we want all the cores for camera
+    mkdir /dev/cpuset/camera-daemon
+    chown system system /dev/cpuset/camera-daemon
+    chown system system /dev/cpuset/camera-daemon/tasks
+    chmod 0664 /dev/cpuset/camera-daemon/tasks
+
+    # Update foreground and background cpusets
+    # Reserve CPU 3 for the top app
+    write /dev/cpuset/foreground/cpus 0-2
+    write /dev/cpuset/background/cpus 0-2
+    write /dev/cpuset/system-background/cpus 0-1
+    write /dev/cpuset/top-app/cpus 0-3
+    write /dev/cpuset/camera-daemon/cpus 0-3
+    write /dev/cpuset/restricted/cpus 0-3
+
+    setprop vendor.post_boot.parsed 1
+
+on charger
+    write /sys/module/lpm_levels/parameters/sleep_disabled 0
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "powersave"
+
+on property:dev.bootcomplete=1
+    trigger enable-low-power
+    setprop sys.io.scheduler bfq

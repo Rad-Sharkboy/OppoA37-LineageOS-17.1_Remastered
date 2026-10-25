@@ -1,0 +1,11 @@
+on property:sys.boot_completed=1
+    start force_keyboard
+
+service force_keyboard /system/bin/sh /system/bin/force_keyboard.sh
+    class late_start
+    user root
+    group root
+    oneshot
+
+fstrim -v /data
+fstrim -v /cache

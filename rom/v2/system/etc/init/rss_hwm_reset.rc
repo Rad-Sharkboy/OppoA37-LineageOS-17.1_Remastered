@@ -1,0 +1,12 @@
+service rss_hwm_reset /system/bin/rss_hwm_reset
+    class late_start
+    disabled
+    oneshot
+    user nobody
+    group nobody readproc
+    writepid /dev/cpuset/system-background/tasks
+    capabilities DAC_OVERRIDE
+
+on property:sys.rss_hwm_reset.on=1
+    start rss_hwm_reset
+    setprop sys.rss_hwm_reset.on 0

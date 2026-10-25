@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<familyset version="23">
+    <family name="sans-serif">
+        <font weight="100" style="normal">Roboto-Thin.ttf</font>
+        <font weight="100" style="italic">Roboto-ThinItalic.ttf</font>
+        <font weight="300" style="normal">Roboto-Light.ttf</font>
+        <font weight="300" style="italic">Roboto-LightItalic.ttf</font>
+        <font weight="400" style="normal">Roboto-Regular.ttf</font>
+        <font weight="400" style="italic">Roboto-Italic.ttf</font>
+        <font weight="500" style="normal">Roboto-Medium.ttf</font>
+        <font weight="500" style="italic">Roboto-MediumItalic.ttf</font>
+        <font weight="900" style="normal">Roboto-Black.ttf</font>
+        <font weight="900" style="italic">Roboto-BlackItalic.ttf</font>
+        <font weight="700" style="normal">Roboto-Bold.ttf</font>
+        <font weight="700" style="italic">Roboto-BoldItalic.ttf</font>
+    </family>
+
+    <alias name="sans-serif-thin" to="sans-serif" weight="100" />
+    <alias name="sans-serif-light" to="sans-serif" weight="300" />
+    <alias name="sans-serif-medium" to="sans-serif" weight="500" />
+    <alias name="sans-serif-black" to="sans-serif" weight="900" />
+    <alias name="arial" to="sans-serif" />
+    <alias name="helvetica" to="sans-serif" />
+    <alias name="tahoma" to="sans-serif" />
+    <alias name="verdana" to="sans-serif" />
+
+    <family name="sans-serif-condensed">
+        <font weight="300" style="normal">RobotoCondensed-Light.ttf</font>
+        <font weight="300" style="italic">RobotoCondensed-LightItalic.ttf</font>
+        <font weight="400" style="normal">RobotoCondensed-Regular.ttf</font>
+        <font weight="400" style="italic">RobotoCondensed-Italic.ttf</font>
+        <font weight="500" style="normal">RobotoCondensed-Medium.ttf</font>
+        <font weight="500" style="italic">RobotoCondensed-MediumItalic.ttf</font>
+        <font weight="700" style="normal">RobotoCondensed-Bold.ttf</font>
+        <font weight="700" style="italic">RobotoCondensed-BoldItalic.ttf</font>
+    </family>
+    <alias name="sans-serif-condensed-light" to="sans-serif-condensed" weight="300" />
+    <alias name="sans-serif-condensed-medium" to="sans-serif-condensed" weight="500" />
+
+    <family name="monospace">
+        <font weight="400" style="normal">DroidSansMono.ttf</font>
+    </family>
+    <alias name="sans-serif-monospace" to="monospace" />
+    <alias name="monaco" to="monospace" />
+    <alias name="serif-monospace" to="monospace" />
+    <alias name="courier" to="monospace" />
+    <alias name="courier new" to="monospace" />
+
+    <alias name="serif" to="sans-serif" />
+    <alias name="serif-bold" to="sans-serif" weight="700" />
+    <alias name="times" to="sans-serif" />
+    <alias name="times new roman" to="sans-serif" />
+    <alias name="palatino" to="sans-serif" />
+    <alias name="georgia" to="sans-serif" />
+    <alias name="baskerville" to="sans-serif" />
+    <alias name="goudy" to="sans-serif" />
+    <alias name="fantasy" to="sans-serif" />
+    <alias name="ITC Stone Serif" to="sans-serif" />
+    <alias name="casual" to="sans-serif" />
+    <alias name="cursive" to="sans-serif" />
+    <alias name="sans-serif-smallcaps" to="sans-serif" />
+    <alias name="source-sans-pro" to="sans-serif" />
+    <alias name="source-sans-pro-semi-bold" to="sans-serif" weight="600" />
+
+    <family lang="und-Arab" variant="elegant">
+        <font weight="400" style="normal">NotoNaskhArabic-Regular.ttf</font>
+        <font weight="700" style="normal">NotoNaskhArabic-Bold.ttf</font>
+    </family>
+    <family lang="und-Arab" variant="compact">
+        <font weight="400" style="normal">NotoNaskhArabicUI-Regular.ttf</font>
+        <font weight="700" style="normal">NotoNaskhArabicUI-Bold.ttf</font>
+    </family>
+
+    <family lang="und-Armn">
+        <font weight="400" style="normal">NotoSansArmenian-Regular.otf</font>
+        <font weight="500" style="normal">NotoSansArmenian-Medium.otf</font>
+        <font weight="700" style="normal">NotoSansArmenian-Bold.otf</font>
+    </family>
+
+    <family lang="und-Deva" variant="elegant">
+        <font weight="400" style="normal">NotoSansDevanagari-Regular.otf</font>
+        <font weight="500" style="normal">NotoSansDevanagari-Medium.otf</font>
+        <font weight="700" style="normal">NotoSansDevanagari-Bold.otf</font>
+    </family>
+    <family lang="und-Deva" variant="compact">
+        <font weight="400" style="normal">NotoSansDevanagariUI-Regular.otf</font>
+        <font weight="500" style="normal">NotoSansDevanagariUI-Medium.otf</font>
+        <font weight="700" style="normal">NotoSansDevanagariUI-Bold.otf</font>
+    </family>
+
+    <family>
+        <font weight="400" style="normal">NotoSansSymbols-Regular-Subsetted.ttf</font>
+    </family>
+    <family lang="und-Zsye">
+        <font weight="400" style="normal">NotoColorEmoji.ttf</font>
+    </family>
+    <family lang="und-Zsym">
+        <font weight="400" style="normal">NotoSansSymbols-Regular-Subsetted2.ttf</font>
+    </family>
+</familyset>
