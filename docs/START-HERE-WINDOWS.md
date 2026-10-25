@@ -1,5 +1,7 @@
 # Start here: collect the existing V2 baseline
 
+**Next after retaining E002:** `docs/E003-CPU-TARGET-LOAD.md` provides a one-entry CPU target-load experiment with ordinary-use feedback and one-command restore. `docs/CHANGE-STATUS.md` tracks what will go into the final ROM packaging.
+
 **Already completed E002?** Use `docs/CPU-BOOST-DEFAULT.md` in the kit to keep the accepted 998.4 MHz CPU boost with two commands. The baseline steps below are for first-time collection; no further timed battery test is required.
 
 Keep the V2 ROM and kernel already installed on your phone. Do not reinstall the ROM, flash this ZIP, use TWRP, or apply the GPU experiment for this first step. This ZIP contains scripts and documentation, not a flashable update.
