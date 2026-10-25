@@ -51,3 +51,5 @@ Send `baseline-before.txt` in chat. This snapshot reads configuration and counte
 We first check CPU frequency limits and governor settings, GPU timeout and frequency limits, low-power-mode state, and battery/wakelock readings. The next test depends on those actual values. A single snapshot does not measure battery drain.
 
 The optional `gpu-idle-test.sh` in the kit is for a later, explicitly described A/B comparison. Do not run `apply` yet. Nothing needs flashing in TWRP for that runtime experiment either.
+
+If your baseline has already been reviewed and E001 has been recommended, follow `docs/E001-RUN-WINDOWS.md` in the kit. The first A37fw baseline is summarized in `docs/BASELINE-RESULTS.md`.
