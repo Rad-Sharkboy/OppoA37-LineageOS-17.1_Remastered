@@ -1,5 +1,7 @@
 # Start here: collect the existing V2 baseline
 
+**Already completed E002?** Use `docs/CPU-BOOST-DEFAULT.md` in the kit to keep the accepted 998.4 MHz CPU boost with two commands. The baseline steps below are for first-time collection; no further timed battery test is required.
+
 Keep the V2 ROM and kernel already installed on your phone. Do not reinstall the ROM, flash this ZIP, use TWRP, or apply the GPU experiment for this first step. This ZIP contains scripts and documentation, not a flashable update.
 
 ## 1. Prepare the computer and phone
@@ -54,4 +56,4 @@ The optional `gpu-idle-test.sh` in the kit is for a later, explicitly described 
 
 If your baseline has already been reviewed and E001 has been recommended, follow `docs/E001-RUN-WINDOWS.md` in the kit. The first A37fw baseline is summarized in `docs/BASELINE-RESULTS.md`.
 
-After accepting E001, keep GPU timeout at 80 ms and use `docs/E002-CPU-BOOST.md` for the next single-setting CPU comparison. `docs/GPU-80MS-DEFAULT.md` describes retaining 80 ms in an edited ROM; saving that file on GitHub does not install it on the phone.
+E001 GPU timeout=80 ms and E002 CPU initial boost=998400 kHz are now accepted. `docs/CPU-BOOST-DEFAULT.md` describes installing CPU persistence on the current rooted V2. `docs/GPU-80MS-DEFAULT.md` describes retaining 80 ms in an edited ROM; saving either change on GitHub does not install it on the phone.

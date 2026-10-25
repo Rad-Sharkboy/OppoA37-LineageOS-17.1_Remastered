@@ -55,9 +55,16 @@ This ROM is a **64-bit** build that has been heavily debloated and tweaked for t
 
 ---
 
+## Development branch power tuning
+
+* **Shorter GPU idle delay:** Reduced the wait before the GPU attempts a low-power state from **500 ms to 80 ms**. This can reduce battery use between short rendering bursts while retaining GPU clock limits and the 65 Hz display.
+* **Lower initial CPU boost:** Set interactive's initial boost target to **998.4 MHz**, keeping the full **1.2096 GHz** maximum available. This can reduce power use during short CPU bursts. [Apply it on the current V2 with Magisk](docs/CPU-BOOST-DEFAULT.md).
+
+These changes are on the development branch; installing the original V2 release does not include them.
+
 ## 🐛 Known Bugs
 
-1. **Aggressive CPU Scaling (Battery Drain):** The included custom kernel is very aggressive with CPU speeds. It makes the phone feel fast, but it costs a bit more battery life. Since this is a kernel-level trait, it's not currently up to me to fix.
+1. **Aggressive CPU Scaling (Battery Drain):** The original V2 kernel favors high CPU speeds. The development branch lowers the initial boost target while retaining maximum clocks; further work focuses on power use during normal activity.
 2. **GCam Go Front Video Viewfinder:** When recording video with the front camera, the live viewfinder displays a half-black/split-screen layout. **This is strictly a visual UI/hardware-stride bug.** The actual video file records perfectly in standard 16:9 HD without any corruption or black bars.
 
 ---

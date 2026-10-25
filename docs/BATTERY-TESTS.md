@@ -1,5 +1,7 @@
 # Baseline and E001: GPU idle timeout
 
+E001 GPU timeout=80 ms and E002 CPU hispeed=998400 kHz have since been accepted for retention based on ordinary-use feedback. The comparison plan below describes the original exploration; longer controlled tests are optional, not a requirement to keep these accepted settings. See GPU-80MS-DEFAULT.md and CPU-BOOST-DEFAULT.md for current instructions.
+
 No battery gain has been measured yet. These scripts are for a rooted Oppo A37/A37f/A37fw running the confirmed V2. They do not flash or change boot files.
 
 ## Collect the baseline first

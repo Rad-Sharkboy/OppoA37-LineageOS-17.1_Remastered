@@ -20,8 +20,8 @@ on enable-low-power
     write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 95
     write /sys/devices/system/cpu/cpufreq/interactive/timer_rate 40000
     
-    # Cap standard boost at 800MHz instead of 1.2GHz
-    write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 800000
+    # Initial boost target of 998.4 MHz; maximum frequency remains available.
+    write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 998400
     
     write /sys/devices/system/cpu/cpufreq/interactive/io_is_busy 0
     

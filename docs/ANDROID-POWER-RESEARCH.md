@@ -8,7 +8,7 @@ Sources were fetched and read on 25 October 2026. These are general Android/kern
 
 The live V2 baseline has hispeed=1209600, go_hispeed_load=75 and aggressive stepped target loads, despite ROM requests for 800000/95 and gentler loads. Kernel delayed tuning is confirmed to override several values.
 
-E002 tests **only hispeed_freq: 1209600 → 998400 kHz**. Keep scaling_max_freq=1209600, the existing target-load table, GPU timeout=80 ms, clocks and 65 Hz unchanged. This conservative intermediate target may reduce burst energy, but longer active time can offset lower frequency and aggressive target loads can still raise it to maximum. Real responsiveness and longer matched-use tests decide whether to keep it. See E002-CPU-BOOST.md.
+E002 changes **only hispeed_freq: 1209600 → 998400 kHz**. It is accepted for retention after ordinary-use feedback. Keep scaling_max_freq=1209600, the existing target-load table, GPU timeout=80 ms, clocks and 65 Hz unchanged. This intermediate target may reduce burst energy, but longer active time can offset lower frequency and aggressive target loads can still raise it to maximum. See CPU-BOOST-DEFAULT.md.
 
 ## 2. Verify Doze, not just CPU idle
 
@@ -32,4 +32,4 @@ The editable-file import initially omitted `.ini` files. The existing Wi-Fi conf
 
 ## Priority
 
-Keep accepted GPU timeout=80; test E002 next. Separately verify Doze history/scan-throttling state for idle drain. Then isolate scheduler accounting/performance and kernel debug/polling overhead. Do not combine those changes, reduce the working display refresh rate, block telephony wakelocks further, or count disabled write durability as a speed improvement.
+Keep accepted GPU timeout=80 and CPU initial boost=998400. E002 normal-use results are in E002-RESULTS.md; the user accepted the change without noticeable slowdown. Light Doze is working, and normal-use drain is now the priority. Next candidates are the aggressive interactive target-load table and kernel work during active use; isolate any proposed change and explain it first. Do not reduce the working display refresh rate, block telephony wakelocks further, or count disabled write durability as a speed improvement.
