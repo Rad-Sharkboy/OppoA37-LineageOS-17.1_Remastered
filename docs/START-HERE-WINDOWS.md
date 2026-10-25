@@ -53,3 +53,5 @@ We first check CPU frequency limits and governor settings, GPU timeout and frequ
 The optional `gpu-idle-test.sh` in the kit is for a later, explicitly described A/B comparison. Do not run `apply` yet. Nothing needs flashing in TWRP for that runtime experiment either.
 
 If your baseline has already been reviewed and E001 has been recommended, follow `docs/E001-RUN-WINDOWS.md` in the kit. The first A37fw baseline is summarized in `docs/BASELINE-RESULTS.md`.
+
+After accepting E001, keep GPU timeout at 80 ms and use `docs/E002-CPU-BOOST.md` for the next single-setting CPU comparison. `docs/GPU-80MS-DEFAULT.md` describes retaining 80 ms in an edited ROM; saving that file on GitHub does not install it on the phone.
