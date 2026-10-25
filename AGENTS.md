@@ -10,3 +10,4 @@
 - Keep binaries/images outside Git. rom/v2 contains unchanged original editable files initially; preserve extraction manifests and use small reviewed diffs for future changes. Original system.img holds authoritative Android ownership, SELinux labels, capabilities, hardlinks and other filesystem metadata.
 - Keep IMS/radio components. Never use generic wakelock blocking, cache dropping or thermal bypass as a battery optimization. Investigate existing behavior before adding more tuning.
 - Hardware results are required before making any experiment permanent. Current kernel source is not proven byte-for-byte equivalent to the dirty kernel embedded in V2.
+- User permits native-library reverse engineering and experimental binary patches, including Ghidra analysis. Record the exact original binary hash/ABI, patch and rollback, explain the test first, and isolate each patch in its own commit. Preserve the user's existing camera modifications and telephony functionality.
