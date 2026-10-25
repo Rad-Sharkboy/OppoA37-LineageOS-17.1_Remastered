@@ -1,7 +1,8 @@
 # Oppo A37fw development
 
 - Target: user's Oppo A37fw, ARM64 Snapdragon 410, V2 ZIP-based Android 10 ROM.
-- Prioritize actual battery runtime, responsiveness, storage and RAM efficiency. Preserve CPU/GPU overclocks, IMS, calls, SIM, SMS and mobile data. Do not equate less page cache with lower memory cost or better battery life.
+- Prioritize actual battery runtime, responsiveness, storage and RAM efficiency. Preserve CPU/GPU overclocks and the user's working 65 Hz LCD overclock, IMS, calls, SIM, SMS and mobile data. Do not equate less page cache with lower memory cost or better battery life.
+- Include internal eMMC/SD-card I/O and shutdown/reboot latency in performance work. Identify each backing device before tuning. Preserve write durability; never obtain benchmark gains by skipping fsync, disabling barriers or bypassing thermal limits. Commit and push each independent change separately.
 - Before changing behavior, explain the hypothesis, possible regressions, real-device comparison and rollback. The user can test experimental changes. Never present an untested experiment as a proven improvement.
 - Keep each independent fix/experiment in its own commit. Do not combine governor, GPU, charging and debloat changes in one test.
 - Work in existing isolated checkouts; do not create worktrees unless requested.
