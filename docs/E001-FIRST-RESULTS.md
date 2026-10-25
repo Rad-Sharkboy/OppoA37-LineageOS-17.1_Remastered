@@ -1,5 +1,7 @@
 # E001: first hardware result
 
+Subsequent user decision: retain 80 ms as the preferred setting despite unmeasured energy savings; see GPU-80MS-DEFAULT.md. The assessment below records the initial test evidence.
+
 User ran A/B on V2, reported no noticeable slowdown, and supplied all five requested snapshots. Snapshots reconnect over USB and therefore report charging, as expected. Raw device logs are not published; this is a derived summary.
 
 | Measurement | A: 500 ms | B: 80 ms |
