@@ -30,7 +30,7 @@ export LD_LIBRARY_PATH=/workspace/.onboarding/sysroot/usr/lib/x86_64-linux-gnu
 
 Do not source the kernel's Python 2 activation for Python 3 extraction.
 
-`rom/v2/` contains 254 original editable UTF-8 files (properties, init rules, XML, shell scripts and related configuration). `rom/tracked-paths.json` lists their paths relative to the extracted filesystem root. `rom/v2-inventory.json` covers the whole extracted tree, including binaries and symlink targets. These files are the original baseline, with no performance edits.
+The initial `rom/v2/` import contained 254 original editable UTF-8 files (properties, init rules, XML, shell scripts and related configuration). Audit coverage now includes the original WLAN `.ini`, bringing the count to 255. `rom/tracked-paths.json` lists their paths relative to the extracted filesystem root. `rom/v2-inventory.json` records the original whole-tree contents, including binaries and symlink targets; it remains a baseline manifest, not a hash list for later edits. Subsequent performance changes are separate commits, including the accepted GPU timeout write described in GPU-80MS-DEFAULT.md.
 
 Path example: `rom/v2/system/build.prop` maps to the kitchen's `system/system/build.prop` when the kitchen calls the image-root folder `system`, as in the user's screenshot.
 
