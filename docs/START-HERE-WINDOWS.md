@@ -1,10 +1,12 @@
-# Start here: collect the existing V2 baseline
+# Start here: current tests and V2 baseline
 
-**E004 is prepared for after E003:** `docs/E004-GPU-IDLER.md` explains the GPU's additional idle counter and a reversible 10-to-3 trial. Finish the E003 feedback first; keep CPU settings constant during E004.
+**Current next step: first-touch/Home response.** `docs/E005-FIRST-TOUCH.md` provides a short, reversible input-boost test. Try it in Balanced and report whether the first response improves.
 
-**Next after retaining E002:** `docs/E003-CPU-TARGET-LOAD.md` provides a one-entry CPU target-load experiment with ordinary-use feedback and one-command restore. `docs/CHANGE-STATUS.md` tracks what will go into the final ROM packaging.
+**Then profile-aware tuning:** `docs/POWER-PROFILES.md` explains the optional Magisk Power HAL extension: accepted battery settings in Balanced, high CPU/GPU floors in Performance. It needs one reboot and a short profile-switch check. E003 is retained in this mechanism following ordinary-use feedback. `docs/CHANGE-STATUS.md` tracks final packaging.
 
-**Already completed E002?** Use `docs/CPU-BOOST-DEFAULT.md` in the kit to keep the accepted 998.4 MHz CPU boost with two commands. The baseline steps below are for first-time collection; no further timed battery test is required.
+**E004 remains pending:** the last attempt stopped because the GPU timeout was 500 ms, so the 10-to-3 GPU idler change did not apply. Revisit `docs/E004-GPU-IDLER.md` after the response/profile checks, keeping Balanced's GPU timeout at 80 ms and other settings constant.
+
+The baseline steps below are for first-time collection; no repeat baseline or timed battery test is required for a phone already reviewed. `docs/CPU-BOOST-DEFAULT.md` describes the older CPU-only helper; the new profile module replaces a recognized copy automatically.
 
 Keep the V2 ROM and kernel already installed on your phone. Do not reinstall the ROM, flash this ZIP, use TWRP, or apply the GPU experiment for this first step. This ZIP contains scripts and documentation, not a flashable update.
 
