@@ -1,5 +1,7 @@
 # Start here: collect the existing V2 baseline
 
+**E004 is prepared for after E003:** `docs/E004-GPU-IDLER.md` explains the GPU's additional idle counter and a reversible 10-to-3 trial. Finish the E003 feedback first; keep CPU settings constant during E004.
+
 **Next after retaining E002:** `docs/E003-CPU-TARGET-LOAD.md` provides a one-entry CPU target-load experiment with ordinary-use feedback and one-command restore. `docs/CHANGE-STATUS.md` tracks what will go into the final ROM packaging.
 
 **Already completed E002?** Use `docs/CPU-BOOST-DEFAULT.md` in the kit to keep the accepted 998.4 MHz CPU boost with two commands. The baseline steps below are for first-time collection; no further timed battery test is required.

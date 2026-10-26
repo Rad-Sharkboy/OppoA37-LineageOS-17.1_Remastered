@@ -29,7 +29,7 @@ for gov in /sys/devices/system/cpu/cpufreq/interactive /sys/devices/system/cpu/c
         read_node "$gov/$field"
     done
 done
-for field in idle_timer gpuclk gpu_available_frequencies gpubusy gpu_idler force_clk_on force_bus_on force_rail_on devfreq/cur_freq devfreq/min_freq devfreq/max_freq devfreq/available_frequencies devfreq/trans_stat; do
+for field in idle_timer gpuclk gpu_available_frequencies gpubusy gpu_idler gpu_idler_idleworkload force_clk_on force_bus_on force_rail_on devfreq/cur_freq devfreq/min_freq devfreq/max_freq devfreq/available_frequencies devfreq/trans_stat; do
     read_node "/sys/class/kgsl/kgsl-3d0/$field"
 done
 for supply in battery bms usb ac; do

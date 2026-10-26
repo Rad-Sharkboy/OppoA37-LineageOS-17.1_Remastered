@@ -2,6 +2,8 @@
 
 The user accepted E001 for retention after observing no noticeable slowdown. Lower idle-tail overhead is plausible; no numeric battery saving has been measured. CPU/GPU frequency limits and the working 65 Hz display setting remain unchanged.
 
+The custom GPU idler can defer deeper sleep for multiple timer expiries while the GPU is in NAP. Thus 80 ms is the idle timer interval, not a promise of full GPU sleep after 80 ms. E004-GPU-IDLER.md explains the additional counter and a separate trial to reduce it.
+
 `rom/v2/system/vendor/etc/init/hw/init.qcom.power.rc` now adds one write in the existing `enable-low-power` action:
 
 ```rc
