@@ -40,6 +40,12 @@ apply() {
 case "$mode" in boot|install|status|remove) ;; *) fail 'Use: sh keep-cpu-boost.sh install|status|remove';; esac
 [ "$(id -u)" = 0 ] || fail 'Root required.'
 [ ! -L "$directory" ] && [ ! -L "$installed" ] && [ ! -L "$result" ] || fail 'Unexpected symlink; stop.'
+if [ -e /data/adb/modules/a37_power_profiles ]; then
+    case "$mode" in
+        install|remove) fail 'Profile module owns CPU tuning; use its status/remove command and reboot first.';;
+        boot) exit 0;;
+    esac
+fi
 
 case "$mode" in
     status)

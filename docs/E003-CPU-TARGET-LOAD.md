@@ -1,5 +1,7 @@
 # E003: hold moderate work at 998.4 MHz
 
+**Retention:** accepted after the user's ordinary-use report. [POWER-PROFILES.md](POWER-PROFILES.md) now supplies this table in Balanced/Power Save while keeping the original table in Performance. The standalone commands below remain available for isolated comparisons.
+
 Raise only the target load associated with the 998.4 MHz CPU step from 60% to 65%. This gives that step slightly more work before the governor chooses a higher frequency, potentially reducing power use during normal activity. The accepted initial boost stays 998.4 MHz and the maximum stays 1209.6 MHz.
 
 Only `998400:60` becomes `998400:65` in the target-load table. Every other entry, boost timing, GPU setting, thermal setting, 65 Hz display and radio configuration stays as it was.
@@ -43,4 +45,4 @@ The repository's `drivers/cpufreq/cpufreq_interactive.c` uses frequency-adjusted
 
 Changing `go_hispeed_load` alone is less predictable here: bypassing its direct jump to hispeed can instead select an even higher frequency through the aggressive target-load table. Shortening boostpulse duration also needs evidence that userspace actually sends those pulses. This single table entry is a smaller next step.
 
-E003 is a temporary experiment. It has not been added to the ROM or kernel startup defaults. Keep it separate from the final ROM payload until a retention decision.
+The standalone experiment remains temporary. The optional profile module supplies persistence; the extracted ROM text and kernel startup tables have not yet been changed for E003. Final ROM integration will include its profile behavior as a whole.

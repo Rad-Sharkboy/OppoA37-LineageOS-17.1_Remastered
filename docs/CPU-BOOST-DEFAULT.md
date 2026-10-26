@@ -1,5 +1,7 @@
 # Keep the 998.4 MHz initial CPU boost
 
+For automatic Balanced/Performance switching, use [POWER-PROFILES.md](POWER-PROFILES.md) instead. That module backs up and replaces this older CPU-only helper. Do not install or remove this helper while the profile module is active; use the module's own rollback.
+
 Interactive now starts its high-load boost at 998.4 MHz instead of jumping straight to 1209.6 MHz. The full 1209.6 MHz maximum remains available when needed. Reducing the initial boost can save some energy during short bursts without a noticeable change in responsiveness.
 
 The user accepted this setting after ordinary use. No further timed comparison is required to retain it. Continue using the phone normally; report any new app-launch delay, scrolling stutter or trouble waking the screen.

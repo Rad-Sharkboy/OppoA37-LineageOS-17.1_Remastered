@@ -59,6 +59,8 @@ This ROM is a **64-bit** build that has been heavily debloated and tweaked for t
 
 * **Shorter GPU idle delay:** Reduced the wait before the GPU attempts a low-power state from **500 ms to 80 ms**. This can reduce battery use between short rendering bursts while retaining GPU clock limits and the 65 Hz display.
 * **Lower initial CPU boost:** Set interactive's initial boost target to **998.4 MHz**, keeping the full **1.2096 GHz** maximum available. This can reduce power use during short CPU bursts. [Apply it on the current V2 with Magisk](docs/CPU-BOOST-DEFAULT.md).
+* **Balanced target-load tuning:** Raise the 998.4 MHz target-load entry from **60% to 65%**, allowing moderate work to remain at that frequency longer.
+* **Profile-aware CPU/GPU control:** An optional [Power HAL extension](docs/POWER-PROFILES.md) applies battery tuning in Balanced and raises active CPU/GPU frequency floors in Performance, retaining hardware sleep and existing thermal protection.
 
 These changes are on the development branch; installing the original V2 release does not include them.
 
