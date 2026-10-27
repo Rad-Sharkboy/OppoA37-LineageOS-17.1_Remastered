@@ -24,6 +24,8 @@ on enable-low-power
     write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 998400
     
     write /sys/devices/system/cpu/cpufreq/interactive/io_is_busy 0
+    write /sys/module/cpu_boost/parameters/input_boost_ms 40
+    write /sys/module/cpu_boost/parameters/input_boost_freq 800000
     
     # Progressive Load Stepping: 45%->400MHz | 60%->800MHz | 75%->998MHz | 88%->1.09GHz | 95%->1.2GHz
     write /sys/devices/system/cpu/cpufreq/interactive/target_loads "45 400000:60 800000:75 998400:88 1094400:95"
