@@ -52,6 +52,7 @@ on enable-low-power
 
     # E001: accepted 80 ms GPU idle timeout; preserve frequency limits.
     write /sys/class/kgsl/kgsl-3d0/idle_timer 80
+    write /sys/class/kgsl/kgsl-3d0/gpu_idler_idleworkload 3
 
     # Set RPS mask
     write /sys/class/net/rmnet0/queues/rx-0/rps_cpus 2

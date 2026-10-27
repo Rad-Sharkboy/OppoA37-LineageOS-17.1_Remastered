@@ -1,6 +1,6 @@
 # E004: fewer GPU idle checks before deeper power saving
 
-Finish the E003 decision first, then hold that CPU setting constant during this separate GPU trial. E004 is ready to try afterward; no ROM or kernel flash is needed.
+Accepted for retention after the user reported E001–E005 applied and working. The edited ROM init file now writes an idler threshold of 3 at boot. The current installed V2 still needs the temporary command after reboot until the edited ROM is packaged. The isolated trial below remains available for comparison.
 
 ## Source finding
 
@@ -37,4 +37,4 @@ Expect `E004 active: 3 idle checks`. Use the phone normally: read a page, pause 
 .\adb.exe shell "su -c 'sh /data/local/tmp/gpu-idler-test.sh restore'"
 ```
 
-This restores an effective threshold of 10 and leaves the other settings alone. If the original readout was 0, the script writes explicit 10 because the kernel setter rejects 0; both use the same threshold. A reboot restores the original raw default on current V2, while also resetting other temporary experiments. E004 has not been added to startup defaults.
+This restores an effective threshold of 10 and leaves the other settings alone. If the original readout was 0, the script writes explicit 10 because the kernel setter rejects 0; both use the same threshold. A reboot restores the original raw default on unmodified V2, while also resetting other temporary experiments. The development ROM init file now retains 3; its rollback is to restore that one line to 10 before repacking.
