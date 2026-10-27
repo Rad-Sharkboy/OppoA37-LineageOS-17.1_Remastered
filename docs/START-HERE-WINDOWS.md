@@ -1,10 +1,10 @@
 # Start here: current tests and V2 baseline
 
-**Current next step: first-touch/Home response.** `docs/E005-FIRST-TOUCH.md` provides a short, reversible input-boost test. Try it in Balanced and report whether the first response improves.
+**E001–E005 are accepted:** the user reports all five applied and working. E004's three idle checks and E005's 800 MHz / 40 ms input boost are now retained in the development ROM init file. They remain temporary on the installed V2 until the edited files are packaged; there is no need to repeat the comparisons.
 
 **Then profile-aware tuning:** `docs/POWER-PROFILES.md` explains the optional Magisk Power HAL extension: accepted battery settings in Balanced, high CPU/GPU floors in Performance. It needs one reboot and a short profile-switch check. E003 is retained in this mechanism following ordinary-use feedback. `docs/CHANGE-STATUS.md` tracks final packaging.
 
-**E004 remains pending:** the last attempt stopped because the GPU timeout was 500 ms, so the 10-to-3 GPU idler change did not apply. Revisit `docs/E004-GPU-IDLER.md` after the response/profile checks, keeping Balanced's GPU timeout at 80 ms and other settings constant.
+**E006 and kernel cleanup:** `docs/E006-KERNEL-WORK.md` describes the scheduler work reduction, zRAM cleanup and debug/profiling reductions. E006 requires a rebuilt kernel; there is no ADB apply command. The ROM ZIP remains unassembled for now, with a later combined install check described there.
 
 The baseline steps below are for first-time collection; no repeat baseline or timed battery test is required for a phone already reviewed. `docs/CPU-BOOST-DEFAULT.md` describes the older CPU-only helper; the new profile module replaces a recognized copy automatically.
 

@@ -6,7 +6,7 @@ Focus: active-use battery efficiency, correctness and work reduction while retai
 
 `drivers/gpu/msm/kgsl_pwrctrl.c` implements the custom idler. `kgsl_idle_check()` increments a counter and re-arms the idle timer while deferring a requested state transition. Its fallback threshold is 10; `kgsl_active_count_get()` resets the count when waking from a non-active state. `_nap()` gates clocks, while `_sleep()` also disables AXI and releases the DMA-latency QoS request; `_slumber()` shuts down further device state.
 
-Earlier logs show idler enabled and accepted timer=80, but did not include the workload threshold. The new E004 tool reads it and offers a 10-to-3 trial after the CPU comparison. See E004-GPU-IDLER.md. No default has been changed yet.
+The user now reports E001–E005 applied and working. The development ROM init retains idle timer=80 and E004 workload threshold=3. See E004-GPU-IDLER.md. The standalone tool remains available for rollback/comparison on the installed V2.
 
 A local state-machine fixture uses the extracted `kgsl_idle_check()` body and confirms nine deferred re-arms at threshold 10 versus two at threshold 3, including raw-0 fallback, active-reference protection and suspend bypass. It models state control rather than physical GPU power or timing. The phone script separately passed apply/readback/restore and baseline-guard fixtures, including restoring effective 10 after a raw-0 default.
 
@@ -35,3 +35,5 @@ Start with a dependency map against the active device tree and drivers actually 
 Smaller inactive code reduces image/static memory costs, while eliminating executed bookkeeping or work queues can reduce CPU work. Boot/install time must be measured separately. Keep the current build as a comparison and use one configuration change per commit. Do not trim modem/IMS, storage, filesystem, display or rollback support merely to make the file smaller.
 
 The audit also checked scheduler granularity, HRTICK, charger logging and recurring Cinnamon work. HRTICK is compiled but disabled as a scheduler feature by default; large charger status logs are already compiled out; the main interactive/Cinnamon I/O paths do not have routine printk overhead. Those are not current removal wins.
+
+The subsequent E006 audit found unused UTIL_EST updates, dynamic debug metadata, MMC profiling checks, redundant zRAM run-history writes and missing decoder bounds. It also traced the recurring Cinnamon fsync worker to a bypass that skipped real filesystem sync calls. These changes and validation are recorded in [E006-KERNEL-WORK.md](E006-KERNEL-WORK.md). KALLSYMS_ALL is retained because Qualcomm's common-log driver resolves data symbols through it for crash logging.

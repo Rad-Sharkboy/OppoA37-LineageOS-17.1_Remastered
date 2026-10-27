@@ -14,9 +14,9 @@ Performance intentionally spends more power to keep active clocks high. Frequenc
 
 Select Balanced before lowering GPU maximums with another tuning app: this old devfreq interface rejects a maximum below its requested minimum. V2's thermal-engine uses a separate control and remains effective.
 
-## First finish the short E005 comparison
+## E005 input response
 
-The first-touch/Home delay has its own test in [E005-FIRST-TOUCH.md](E005-FIRST-TOUCH.md). Try that in Balanced before installing this profile patch, so you can tell whether the small input pulse helps. No long timed battery run is needed. Installation below reboots the phone and therefore clears temporary E005; reapply it afterward only if you chose to retain it.
+The first-touch/Home pulse has been accepted; its standalone instructions remain in [E005-FIRST-TOUCH.md](E005-FIRST-TOUCH.md). Installation below reboots the phone and clears temporary E005 on the original V2, so reapply the retained input pulse afterward. A future ROM package will include its init default.
 
 ## Install on the current V2
 
@@ -51,7 +51,7 @@ The active profile should change from `2` to `1`, the last HAL write result shou
 
 The one-time five-minute boot reconciliation handles the old V2 kernel's delayed settings writes. It then exits. Profile and screen events apply settings directly through the HAL; there is no resident shell polling loop. A recognized older E002 startup helper is backed up and replaced by this profile-aware mechanism so it cannot lower the Performance boost later.
 
-E003 is retained here following the user's no-slowdown feedback. The last pasted E003 output showed the baseline table and reset GPU/CPU values, so the profile readback above also establishes what is actually active. Those commands were run in Balanced; the screenshot's Performance selection does not explain their values.
+The user has accepted E001–E005 after ordinary use. The profile readback above establishes which settings are active after a profile switch. Those experiments were run in Balanced; Performance was selected only for the screenshot.
 
 ## Roll back
 
