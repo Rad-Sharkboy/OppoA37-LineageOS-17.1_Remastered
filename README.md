@@ -1,6 +1,6 @@
 # ⚡ LineageOS-17.1-OppoA37-f-fw-Remastered
 
-**V2.1 combined test build:** [Download the flashable ZIP](https://github.com/Rad-Sharkboy/OppoA37-LineageOS-17.1_Remastered/releases/download/V2.1/Lineage_17.1_REMASTERED_V2.1.zip) · [Install and rollback](docs/V2.1-INSTALL.md). Includes E001–E006, integrated power profiles and the rebuilt kernel; install over V2 without formatting Data.
+**V2.1 combined test build:** [Download the flashable ZIP](https://github.com/Rad-Sharkboy/OppoA37-LineageOS-17.1_Remastered/raw/refs/heads/v2.1-download/downloads/V2.1/Lineage_17.1_REMASTERED_V2.1.zip) · [Install and rollback](docs/V2.1-INSTALL.md). Includes E001–E006, integrated power profiles and the rebuilt kernel; install over V2 without formatting Data.
 
 > **A storage and RAM debloated, bare-metal optimized custom build of LineageOS 17.1 (Android 10) tailored specifically to get better battery life and somewhat refined UI responsiveness for the Oppo A37, A37f, and A37fw.**
 
