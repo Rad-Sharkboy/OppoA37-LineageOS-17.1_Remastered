@@ -22,7 +22,7 @@ The deeper source findings and later kernel-debloat plan are in KERNEL-DEEP-AUDI
 
 All experiment commands ran in Balanced; Performance was selected only for the screenshot. The latest user report confirms E001–E005 applied and working, superseding the earlier refused E004 attempt. The profile module leaves E004's counter and E005's input pulse untouched. Final integration must retain their new init defaults alongside profile-aware E001/E002/E003.
 
-ROM ZIP assembly is deferred at the user's request. E006-KERNEL-WORK.md records the combined-kernel build and later quick device check. Shipped files will stay concise; test scripts and these development notes are not ROM payload.
+The user's latest request authorizes the complete V2.1 ZIP. V2.1-INSTALL.md describes the integrated payload, install and rollback; E006-KERNEL-WORK.md records the kernel build. Shipped files stay concise; test scripts and these development notes are not ROM payload.
 
 The kitchen in the supplied screenshot calls the extracted image root `system`. Thus the edited GitHub init file maps to `system/system/vendor/etc/init/hw/init.qcom.power.rc`. This records the mapping, not instructions to repack now. The full replacement list will be generated from the accepted final changes.
 
