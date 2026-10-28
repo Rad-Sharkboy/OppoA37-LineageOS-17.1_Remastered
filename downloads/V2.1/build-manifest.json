@@ -1,0 +1,200 @@
+{
+  "release": "V2.1",
+  "rom_commit": "632968eed602211c29bb5ee67735dd8f5b8f1ab2",
+  "source_zip_sha256": "446958b5e5ba36b23db6edc6f20caddfd5c0f01f0fb9ce26c294ffd82aa9ed9e",
+  "kernel_sha256": "2e97c93cd24a83c352ad3e777d98a5eebe0dbe2fad823d8ee77f9ea20d0e3160",
+  "boot": {
+    "bytes": 18888704,
+    "sha256": "cf7b8d673eb36209f44de9c61dd63fd9a90cd64f8014f96cb9c628f2c6cc95a8",
+    "ramdisk_sha256": "92887d70ff1d6d7c1788c01eb5ea0411434a3164cf328deaf096056d7bd6c1d4",
+    "dt_sha256": "540e8defbed41074c18743273aa34490066eddb80b0e4e2bf78ca502f3359571"
+  },
+  "system_sha256": "277e25a775f1bc03ffede0ef968eef58523dce5582171e1e5635aafde80f23b0",
+  "edits": {
+    "system/build.prop": {
+      "sha256": "b68c22b2cbab819441a055bb81633890787a66d147ef6777de66e4edd4f32e7e",
+      "bytes": 6195,
+      "metadata": {
+        "inode": 823,
+        "mode": 384,
+        "flags": "0x80080",
+        "uid": 0,
+        "gid": 0,
+        "size": 6195,
+        "xattrs": {
+          "security.selinux": "753a6f626a6563745f723a73797374656d5f66696c653a733000"
+        },
+        "generation": 0,
+        "extra_isize": 28,
+        "times": {
+          "ctime": [
+            1788015622,
+            0
+          ],
+          "atime": [
+            1788015622,
+            0
+          ],
+          "mtime": [
+            1788015622,
+            0
+          ],
+          "crtime": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "system/vendor/etc/init/hw/init.qcom.power.rc": {
+      "sha256": "5c0f92221adf7b7bb701525011cfe48cb8120339c3d5988f1a1bb4669b2d1a6f",
+      "bytes": 3846,
+      "metadata": {
+        "inode": 3075,
+        "mode": 420,
+        "flags": "0x80080",
+        "uid": 0,
+        "gid": 0,
+        "size": 3846,
+        "xattrs": {
+          "security.selinux": "753a6f626a6563745f723a76656e646f725f636f6e666967735f66696c653a733000"
+        },
+        "generation": 0,
+        "extra_isize": 28,
+        "times": {
+          "ctime": [
+            1786130252,
+            0
+          ],
+          "atime": [
+            1786130252,
+            0
+          ],
+          "mtime": [
+            1786130252,
+            0
+          ],
+          "crtime": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "system/vendor/etc/init/android.hardware.power@1.2-service-qti.rc": {
+      "sha256": "10ce294fe4ce3f69fbbbd04f3425e8795f3bb3d4d4be78691be21a253e1ac880",
+      "bytes": 515,
+      "metadata": {
+        "inode": 3069,
+        "mode": 420,
+        "flags": "0x80080",
+        "uid": 0,
+        "gid": 0,
+        "size": 515,
+        "xattrs": {
+          "security.selinux": "753a6f626a6563745f723a76656e646f725f636f6e666967735f66696c653a733000"
+        },
+        "generation": 0,
+        "extra_isize": 28,
+        "times": {
+          "ctime": [
+            1230768000,
+            0
+          ],
+          "atime": [
+            1230768000,
+            0
+          ],
+          "mtime": [
+            1230768000,
+            0
+          ],
+          "crtime": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "system/vendor/bin/a37-power-profile.sh": {
+      "sha256": "74e2cf631e912762d09f4f320b3bb7fc18bcd498ddd1944fd95f334ec62c9713",
+      "bytes": 3337,
+      "metadata": {
+        "inode": 3748,
+        "mode": 493,
+        "flags": "0x80080",
+        "uid": 0,
+        "gid": 2000,
+        "size": 3337,
+        "xattrs": {
+          "security.selinux": "753a6f626a6563745f723a7174695f696e69745f7368656c6c5f657865633a733000"
+        },
+        "generation": 0,
+        "extra_isize": 28,
+        "times": {
+          "ctime": [
+            1785949025,
+            0
+          ],
+          "atime": [
+            1785949025,
+            0
+          ],
+          "mtime": [
+            1785949025,
+            0
+          ],
+          "crtime": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "system/vendor/bin/hw/android.hardware.power@1.2-service-qti": {
+      "sha256": "018006128be9745a77dbbb37b44408c69e94dee42b418a088da23bc42a82c1de",
+      "bytes": 34587,
+      "metadata": {
+        "inode": 2884,
+        "mode": 493,
+        "flags": "0x80080",
+        "uid": 0,
+        "gid": 2000,
+        "size": 34587,
+        "xattrs": {
+          "security.selinux": "753a6f626a6563745f723a68616c5f706f7765725f64656661756c745f657865633a733000"
+        },
+        "generation": 0,
+        "extra_isize": 28,
+        "times": {
+          "ctime": [
+            1230768000,
+            0
+          ],
+          "atime": [
+            1230768000,
+            0
+          ],
+          "mtime": [
+            1230768000,
+            0
+          ],
+          "crtime": [
+            0,
+            0
+          ]
+        }
+      }
+    }
+  },
+  "transfer": {
+    "blocks": 698112,
+    "new_bytes": 1464315904,
+    "transfer_commands": 702
+  },
+  "brotli_quality": 9,
+  "system_dat_sha256": "011e5eefd46e4c6a958bdf43ca70499d10bd2be389d4c105229794a3d8dcff13",
+  "zip_bytes": 558701081,
+  "zip_sha256": "65cc34a16b2808475e0b76096ed157852ed7252bda13e00b996ee930853c1b77",
+  "system_brotli_bytes": 549505142
+}

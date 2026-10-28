@@ -1,0 +1,15 @@
+Oppo A37 / A37f / A37fw - REMASTERED V2.1 device-test ROM
+
+1. Download Lineage_17.1_REMASTERED_V2.1.zip. Keep your working V2 ZIP available.
+2. In TWRP, back up Boot, System and Data.
+3. Flash V2.1 over V2 WITHOUT wiping or formatting Data, then reboot.
+
+The ZIP includes E001-E006, integrated Balanced/Performance profiles, and the rebuilt kernel. No separate boot.img flash or ADB tuning commands are needed. CPU/GPU overclocks and the 65 Hz display configuration are retained. A one-time profile reconciliation runs five minutes after boot completion.
+
+The included boot image uses the original V2 ramdisk. Reinstall Magisk afterward if you want root; tuning works without it. System add-ons installed outside V2 may also need reinstalling. Like V2, this ZIP is unsigned; leave TWRP ZIP signature verification off.
+
+Try touch/Home after a pause, scrolling, camera, a call/mobile data, saving/copying files, Performance then Balanced, and a reboot. The kernel now completes real filesystem sync; saving may take longer than the old bypass.
+
+Rollback: restore your TWRP Boot/System backup or flash the original V2 ZIP without formatting Data. Reinstall root/system add-ons as needed.
+
+SHA256SUMS contains the ZIP checksum; build-manifest.json records its components. Package/filesystem checks passed. This combined kernel/profile build is ready for your hardware test.
