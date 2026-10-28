@@ -14,7 +14,7 @@ ro.product.system.model=Oppo A37
 ro.product.system.name=A37
 
 ro.build.id=QQ3A.200805.001
-ro.build.display.id=lineage_A37-user 10 QQ3A.200805.001 eng.shiro.20260727.120000 release-keys
+ro.build.display.id=LineageOS 17.1 REMASTERED V2.1
 ro.build.version.incremental=eng.shiro.20260727.120000
 ro.build.version.sdk=29
 ro.build.version.preview_sdk=0
@@ -147,12 +147,12 @@ persist.debug.dalvik.vm.core_platform_api_policy=just-warn
 dalvik.vm.lockprof.threshold=500
 net.bt.name=Android
 
-ro.lineage.version=17.1-20260727-UNOFFICIAL-A37
+ro.lineage.version=17.1-20261028-UNOFFICIAL-A37-REMASTERED-V2.1
 ro.lineage.releasetype=UNOFFICIAL
 ro.lineage.build.version=17.1
-ro.modversion=17.1-20260727-UNOFFICIAL-A37
+ro.modversion=17.1-20261028-UNOFFICIAL-A37-REMASTERED-V2.1
 ro.lineagelegal.url=https://lineageos.org/legal
-ro.lineage.display.version=17.1-20260727-UNOFFICIAL-A37
+ro.lineage.display.version=17.1 REMASTERED V2.1
 ro.lineage.build.version.plat.sdk=9
 ro.lineage.build.version.plat.rev=0
 
@@ -204,3 +204,4 @@ debug.sqlite.journalmode=WAL
 debug.sqlite.syncmode=NORMAL
 ro.sys.sdcardfs=true
 ro.ext4fs.data.bg_io=true
+ro.a37.remastered.version=2.1
