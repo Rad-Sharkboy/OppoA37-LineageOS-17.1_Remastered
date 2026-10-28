@@ -1,8 +1,8 @@
-# E006 and the next combined kernel test
+# E006 and the V2.1 combined kernel test
 
 E001–E005 are accepted following the owner's ordinary-use report. E004's three GPU idle checks and E005's 800 MHz / 40 ms input pulse are retained in the edited ROM init file. E006 now moves into kernel code: it removes work that the configured interactive build does not use. It has no ADB apply command.
 
-The ROM ZIP remains unassembled for now. These source changes are kept in separate commits so the eventual combined install can be split or reverted if a problem appears. Test harnesses stay local outside the kernel repository; documentation and tests do not belong in the ROM payload.
+These changes are compiled and packaged in the complete V2.1 ROM ZIP. See [V2.1 installation and rollback](V2.1-INSTALL.md). Each source change remains in a separate commit for focused follow-up or rollback; local test harnesses and development notes are excluded from the ROM payload.
 
 ## E006: remove unused estimator updates
 
@@ -48,15 +48,15 @@ The appended device-tree bytes are identical before/after (207,477 bytes, SHA-25
 
 The per-CPU runqueue structure shrank from 2,664 to 2,656 bytes; `task_struct` stayed 2,736 bytes because of layout padding. Do not claim per-task RAM savings from removing the estimator field. Image reduction is not a measured boot/install speedup, and total image bytes are not equivalent to permanent RAM saved.
 
-For later packaging, the raw Image SHA-256 is `2e97c93cd24a83c352ad3e777d98a5eebe0dbe2fad823d8ee77f9ea20d0e3160`; Image.gz-dtb SHA-256 is `fd57e9973a9c44218ec348e474bce9895bf0a8f5b01bc1aef9ddf960d2786e82`. These remain local build artifacts pending the combined ROM/boot-image packaging step.
+The raw Image packaged in V2.1 has SHA-256 `2e97c93cd24a83c352ad3e777d98a5eebe0dbe2fad823d8ee77f9ea20d0e3160`; Image.gz-dtb SHA-256 is `fd57e9973a9c44218ec348e474bce9895bf0a8f5b01bc1aef9ddf960d2786e82`. V2.1 uses the raw Image with the original boot ramdisk, separate QCDT and header settings; the gzipped artifact is not flashed directly.
 
 The original linked kernel contains 11,034 dynamic-debug records of 40 bytes each: **441,360 bytes of permanent metadata**, before counting their strings, callsite code or dynamic table allocations. The revised config removes that facility. It keeps `CONFIG_KALLSYMS_ALL`: Qualcomm's common-log driver resolves `log_buf`, `log_buf_len` and `log_first_idx` data symbols for crash logging, so removing all-symbol lookup blindly would lose useful diagnostics.
 
 Scheduler statistics, perf events, general tracing, board drivers and protocols remain for dependency review. CPU/GPU/display clocks, device-tree files, IMS/radio configuration and thermal policy were not edited by this set. The user's 65 Hz display setting is retained. Source comments are absent from the compiled image; removing them would not reduce boot.img.
 
-## Short check after the eventual combined install
+## Short check after installing V2.1
 
-Keep the original working boot image and ROM ZIP available. The new kernel must be packaged with the correct original boot metadata, ramdisk and device-specific DT arrangement before flashing; `Image.gz-dtb` itself is not a replacement boot.img.
+Keep the original working boot image and ROM ZIP available. The complete V2.1 ZIP includes the correctly packaged replacement boot image; no separate kernel flash is needed.
 
 1. In Balanced, let an app sit, then tap/Home, scroll and switch among a few ordinary apps. Open the camera, lock/unlock and check audio, Wi-Fi, a call and mobile data. This checks E006 scheduling, input response, the preserved device functions and zRAM under ordinary memory pressure.
 2. Copy a familiar file to internal storage and the SD card, reopen it and compare its checksum with the original. Save a photo or app document and reopen it. Watch for longer save stalls now that fsync actually completes; do not use forced power loss as a test.
