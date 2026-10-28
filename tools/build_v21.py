@@ -70,8 +70,8 @@ def replace_file(image, path, source, meta, cache, exists=True):
 def boot_image(original, kernel, dest):
     old = original.read_bytes(); k = kernel.read_bytes()
     if old[:8] != b'ANDROID!' or k[56:60] != b'ARM\x64': raise ValueError('Boot/kernel format mismatch')
-    ks, ka, rs, ra, ss, sa, ta, page, dt, unused = struct.unpack_from('<10I', old, 8)
-    if page != 2048 or ss or unused: raise ValueError('Unexpected legacy boot layout')
+    ks, ka, rs, ra, ss, sa, ta, page, dt, os_version = struct.unpack_from('<10I', old, 8)
+    if page != 2048 or ss: raise ValueError('Unexpected legacy boot layout')
     align = lambda n: (n + page - 1) // page * page
     rstart = page + align(ks); dstart = rstart + align(rs) + align(ss)
     if dstart + align(dt) != len(old): raise ValueError('Unexpected boot footer')
@@ -183,6 +183,12 @@ def main():
     print('Compressing Android block payload...',flush=True)
     run(['brotli','-q',str(args.quality),'-w','24',out/'system.new.dat','-o',out/'system.new.dat.br'])
     run(['brotli','-t',out/'system.new.dat.br'])
+    decoded=hashlib.sha256()
+    with subprocess.Popen(['brotli','-d','-c',str(out/'system.new.dat.br')],stdout=subprocess.PIPE) as proc:
+        for chunk in iter(lambda:proc.stdout.read(1024*1024),b''):decoded.update(chunk)
+        if proc.wait():raise RuntimeError('Brotli readback failed')
+    assert decoded.hexdigest()==digest(out/'system.new.dat')
+    manifest['system_dat_sha256']=decoded.hexdigest()
     print('Creating flashable V2.1 ZIP...',flush=True)
     archive=out/'Lineage_17.1_REMASTERED_V2.1.zip'
     files={name:out/name for name in ['boot.img','boot.sha256','system.new.dat.br','system.transfer.list','system.patch.dat']}
