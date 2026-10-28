@@ -2,3 +2,18 @@ service vendor.power-hal-1-2 /vendor/bin/hw/android.hardware.power@1.2-service-q
     class hal
     user system
     group system
+
+on post-fs-data
+    chown system system /sys/class/kgsl/kgsl-3d0/devfreq/min_freq
+    chmod 0664 /sys/class/kgsl/kgsl-3d0/devfreq/min_freq
+
+service a37-power-profile /system/bin/sh /vendor/bin/a37-power-profile.sh
+    class late_start
+    user root
+    group root system
+    seclabel u:r:shell:s0
+    disabled
+    oneshot
+
+on property:sys.boot_completed=1
+    start a37-power-profile
