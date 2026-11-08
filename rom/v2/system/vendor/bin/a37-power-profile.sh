@@ -33,10 +33,12 @@ cpu_floor=200000
 gpu_floor=200000000
 hispeed=998400
 timer=80
+gpu_wake=2
 loads='1 200000:25 400000:35 533333:45 800000:55 998400:65 1094400:65 1152000:70 1209600:80'
 if [ "$profile" = 2 ]; then
     hispeed=1209600
     timer=500
+    gpu_wake=0
     loads='1 200000:25 400000:35 533333:45 800000:55 998400:60 1094400:65 1152000:70 1209600:80'
 fi
 cpu_applied=0
@@ -56,12 +58,15 @@ if [ "$profile" = 2 ] || [ "$gpu_floor" -gt "$maximum" ]; then gpu_floor=$maximu
 printf '%s\n' "$gpu_floor" > /sys/class/kgsl/kgsl-3d0/devfreq/min_freq
 printf '%s\n' "$hispeed" > /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
 printf '%s\n' "$loads" > /sys/devices/system/cpu/cpufreq/interactive/target_loads
+printf '%s\n' "$gpu_wake" > /sys/class/kgsl/kgsl-3d0/default_pwrlevel
 printf '%s\n' "$timer" > /sys/class/kgsl/kgsl-3d0/idle_timer
 )
 initialize_tuning() (
 set -eu
 chown 1000:1000 /sys/class/kgsl/kgsl-3d0/devfreq/min_freq
 chmod 0664 /sys/class/kgsl/kgsl-3d0/devfreq/min_freq
+chown 1000:1000 /sys/class/kgsl/kgsl-3d0/default_pwrlevel
+chmod 0664 /sys/class/kgsl/kgsl-3d0/default_pwrlevel
 echo 3 > /sys/class/kgsl/kgsl-3d0/gpu_idler_idleworkload
 echo 40 > /sys/module/cpu_boost/parameters/input_boost_ms
 echo 800000 > /sys/module/cpu_boost/parameters/input_boost_freq

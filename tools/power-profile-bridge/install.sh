@@ -26,7 +26,7 @@ case "$mode" in
             echo "$cpu minimum=$(cat "$cpu/cpufreq/scaling_min_freq") maximum=$(cat "$cpu/cpufreq/scaling_max_freq")"
             break
         done
-        for node in /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq /sys/devices/system/cpu/cpufreq/interactive/target_loads /sys/class/kgsl/kgsl-3d0/devfreq/min_freq /sys/class/kgsl/kgsl-3d0/devfreq/max_freq /sys/class/kgsl/kgsl-3d0/idle_timer /sys/class/kgsl/kgsl-3d0/gpu_idler_idleworkload /sys/module/cpu_boost/parameters/input_boost_freq /sys/module/cpu_boost/parameters/input_boost_ms; do
+        for node in /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq /sys/devices/system/cpu/cpufreq/interactive/target_loads /sys/class/kgsl/kgsl-3d0/devfreq/min_freq /sys/class/kgsl/kgsl-3d0/devfreq/max_freq /sys/class/kgsl/kgsl-3d0/idle_timer /sys/class/kgsl/kgsl-3d0/default_pwrlevel /sys/class/kgsl/kgsl-3d0/gpu_idler_idleworkload /sys/module/cpu_boost/parameters/input_boost_freq /sys/module/cpu_boost/parameters/input_boost_ms; do
             if [ -r "$node" ]; then echo "$node=$(cat "$node")"; fi
         done
         if [ -f "$module/last-boot.log" ]; then echo 'Boot reconciliation:'; cat "$module/last-boot.log"; fi

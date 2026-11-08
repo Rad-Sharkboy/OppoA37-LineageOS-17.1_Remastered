@@ -4,6 +4,8 @@ User installation, quick comparison and rollback: [POWER-PROFILES.md](../../docs
 
 This directory contains original extension source, a deterministic patch builder, a generated text payload and Magisk installation helpers. It does not contain the original proprietary HAL or a flashable ROM. The installer patches a copy on the phone and verifies the entire output before staging the overlay.
 
+E007: Balanced/Power Save wake at level 2 (200 MHz); Performance wakes at level 0 and retains its high active floor. Native callbacks, init permissions and the one-time reconciliation agree. The kernel resume path also enforces devfreq limits.
+
 ## Pinned input and build
 
 Input: `/vendor/bin/hw/android.hardware.power@1.2-service-qti` from the original V2 system image, little-endian AArch64 ELF64 PIE, 29,808 bytes.
@@ -12,10 +14,10 @@ Input: `/vendor/bin/hw/android.hardware.power@1.2-service-qti` from the original
 Original SHA-256:
 0acfe2bafdcffea00b492f9cd21932b5cf606bc49e0a29e69c64c401a555db15
 Published patched SHA-256:
-018006128be9745a77dbbb37b44408c69e94dee42b418a088da23bc42a82c1de
+16b07bcf456cb5aa23fc4a078fd747eda71ca24471511cc7ad3f5547d9fa11e8
 ```
 
-Rebuild outside the repository, using Python 3, Debian `aarch64-linux-gnu-gcc` 14.2.0-19 and matching binutils (2.44):
+Rebuild outside the repository, using Python 3, `aarch64-linux-gnu-gcc` 15.2.0 and matching binutils (2.46):
 
 ```sh
 python3 tools/power-profile-bridge/build.py \
@@ -35,7 +37,7 @@ The extension uses position-independent AArch64 code and raw `openat/read/write/
 
 ## ELF layout and permissions
 
-The 1,819-byte extension is placed at file offset / virtual address `0x8000`. A redundant `PT_NOTE` descriptor becomes a page-aligned read/execute `PT_LOAD`; the original notes, Android API note and section table remain in place. The GNU build ID is updated to identify the modified image. The 16-byte state at `0x70c0` extends the original writable segment within its existing final BSS page, outside GNU RELRO. No writable/executable segment is introduced. The output grows by 4,779 bytes including alignment padding, to 34,587 bytes.
+The compiled extension is placed at file offset / virtual address `0x8000`. A redundant `PT_NOTE` descriptor becomes a page-aligned read/execute `PT_LOAD`; the original notes, Android API note and section table remain in place. The GNU build ID is updated to identify the modified image. The 16-byte state at `0x70c0` extends the original writable segment within its existing final BSS page, outside GNU RELRO. No writable/executable segment is introduced. The output grows by 4,779 bytes including alignment padding, to 34,587 bytes.
 
 The original service runs as `system:system`. Existing init/ueventd rules grant its CPU governor, CPU minimum and GPU idle controls. The module adds only `system:system`, mode `0664`, to GPU `devfreq/min_freq`, retaining read access. It copies the original HAL's SELinux file context to the overlay. It does not change SELinux mode or policy.
 
