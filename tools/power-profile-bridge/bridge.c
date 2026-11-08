@@ -126,7 +126,9 @@ static void publish(int profile, int failures)
 int a37_hint(int hint, void *data)
 {
     int profile = hint == 0x111 ? (data ? *(int *)data : 0) : -1;
-    int result = original_hint(hint, data);
+    /* Use the responsive legacy path beneath both efficiency profiles. */
+    int legacy_profile = profile == 0 ? 1 : profile;
+    int result = original_hint(hint, profile == 0 ? &legacy_profile : data);
     if (profile >= 0 && profile <= 2) {
         a37_state.profile = profile;
         a37_state.valid = 1;

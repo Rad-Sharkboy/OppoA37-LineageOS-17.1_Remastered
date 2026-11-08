@@ -4,6 +4,8 @@ User installation, quick comparison and rollback: [POWER-PROFILES.md](../../docs
 
 This directory contains original extension source, a deterministic patch builder, a generated text payload and Magisk installation helpers. It does not contain the original proprietary HAL or a flashable ROM. The installer patches a copy on the phone and verifies the entire output before staging the overlay.
 
+E007 also routes profile 0 through the original Balanced legacy branch, removing its separate perfd cap and interaction-hint suppression; the published active profile stays 0. Override return semantics remain unchanged.
+
 E007: Balanced/Power Save wake at level 2 (200 MHz); Performance wakes at level 0 and retains its high active floor. Native callbacks, init permissions and the one-time reconciliation agree. The kernel resume path also enforces devfreq limits.
 
 ## Pinned input and build
@@ -14,7 +16,7 @@ Input: `/vendor/bin/hw/android.hardware.power@1.2-service-qti` from the original
 Original SHA-256:
 0acfe2bafdcffea00b492f9cd21932b5cf606bc49e0a29e69c64c401a555db15
 Published patched SHA-256:
-16b07bcf456cb5aa23fc4a078fd747eda71ca24471511cc7ad3f5547d9fa11e8
+369405405bd19dbaaaaf0aa185ac439b36363586af2d660606a3ebf01c8df9d9
 ```
 
 Rebuild outside the repository, using Python 3, `aarch64-linux-gnu-gcc` 15.2.0 and matching binutils (2.46):
