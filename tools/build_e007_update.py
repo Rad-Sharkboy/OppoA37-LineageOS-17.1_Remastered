@@ -3,6 +3,7 @@
 import argparse, json, shutil, zipfile
 from pathlib import Path
 from build_v21 import digest, run, ROOT
+from build_e007 import E007_HAL_SHA
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
@@ -14,7 +15,7 @@ def main():
     m=json.loads((a.verified_full_build/'build-manifest.json').read_text())
     if m['release']!='V2.1 E007' or digest(a.verified_full_build/'boot.img')!=m['boot']['sha256']:
         raise ValueError('Expected the verified E007 boot component')
-    if digest(a.hal)!=m['hal_sha256']:
+    if digest(a.hal)!=E007_HAL_SHA:
         raise ValueError('Expected the validated E007 native HAL')
     if run(['git','-C',ROOT,'status','--porcelain']).stdout.strip():
         raise ValueError('Commit source before packaging')

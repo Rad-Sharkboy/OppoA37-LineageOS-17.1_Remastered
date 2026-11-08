@@ -107,7 +107,7 @@ int a37_apply(int profile)
         "1 200000:25 400000:35 533333:45 800000:55 998400:60 1094400:65 1152000:70 1209600:80" :
         "1 200000:25 400000:35 533333:45 800000:55 998400:65 1094400:65 1152000:70 1209600:80")) failed++;
     if (!write_text("/sys/class/kgsl/kgsl-3d0/default_pwrlevel",
-                    performance ? "0" : "2")) failed++;
+                    performance ? "0" : "1")) failed++;
     if (!write_text("/sys/class/kgsl/kgsl-3d0/idle_timer", performance ? "500" : "80")) failed++;
     return failed;
 }

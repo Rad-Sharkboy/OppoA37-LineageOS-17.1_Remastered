@@ -16,7 +16,7 @@ Input: `/vendor/bin/hw/android.hardware.power@1.2-service-qti` from the original
 Original SHA-256:
 0acfe2bafdcffea00b492f9cd21932b5cf606bc49e0a29e69c64c401a555db15
 Published patched SHA-256:
-369405405bd19dbaaaaf0aa185ac439b36363586af2d660606a3ebf01c8df9d9
+36da00a282d6a03ac51bc58b7382b1f7548027071e95a58a0a7fbaabdc86c9c5
 ```
 
 Rebuild outside the repository, using Python 3, `aarch64-linux-gnu-gcc` 15.2.0 and matching binutils (2.46):
@@ -64,3 +64,5 @@ Source references:
 - [Lineage settings provider contract](https://github.com/LineageOS/android_lineage-sdk/blob/lineage-17.1/sdk/src/java/lineageos/providers/LineageSettings.java)
 - [Magisk module layout and boot scripts](https://topjohnwu.github.io/Magisk/guides.html)
 - Device kernel: `drivers/gpu/msm/kgsl_pwrctrl.c`, `drivers/devfreq/devfreq.c`, `drivers/cpufreq/cpufreq.c`, `drivers/thermal/msm_thermal.c` and `drivers/soc/qcom/msm_performance.c`.
+
+Device result: 200 MHz wake caused choppiness; profiles 0/1 now retain 310 MHz wake. Performance keeps level 0.
