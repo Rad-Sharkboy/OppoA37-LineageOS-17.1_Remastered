@@ -1,0 +1,2 @@
+E007 full ROM: read README.md in this folder. Flash the full ZIP in TWRP without wiping Data. Keep V2.1 available.
+SHA256: 5e68861799878e38766375932111f8af0d3c175582297ba749cc087efce3bf38

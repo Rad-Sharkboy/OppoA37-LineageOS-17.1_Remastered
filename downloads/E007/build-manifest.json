@@ -1,0 +1,202 @@
+{
+  "release": "V2.1 E007",
+  "rom_commit": "42fe3d37c250ac84499df057d3619bb6cc389520",
+  "source_zip_sha256": "446958b5e5ba36b23db6edc6f20caddfd5c0f01f0fb9ce26c294ffd82aa9ed9e",
+  "kernel_sha256": "33800a510a7edf5d0e4b2c0746dc91afdbce2b3533c9d3f7e4d4c3ad3097cec2",
+  "kernel_commit": "8d94be23b5e760bd403cf663ffcd677df1be83a3",
+  "hal_sha256": "369405405bd19dbaaaaf0aa185ac439b36363586af2d660606a3ebf01c8df9d9",
+  "boot": {
+    "bytes": 18888704,
+    "sha256": "b533e20156cef3af203b74ebd4826bb8060fc2979ab26c4796511ef174e88c8f",
+    "ramdisk_sha256": "92887d70ff1d6d7c1788c01eb5ea0411434a3164cf328deaf096056d7bd6c1d4",
+    "dt_sha256": "540e8defbed41074c18743273aa34490066eddb80b0e4e2bf78ca502f3359571"
+  },
+  "system_sha256": "d4e5dd608198d59fd19cf9c93295939910084208a3e72f8f03e9a9fa725d70d9",
+  "edits": {
+    "system/build.prop": {
+      "sha256": "48afb7cc1f95f91060c9d5a4c6007ed6b2a06595a1993c7e2155cef7c1e1e230",
+      "bytes": 6220,
+      "metadata": {
+        "inode": 823,
+        "mode": 384,
+        "flags": "0x80080",
+        "uid": 0,
+        "gid": 0,
+        "size": 6220,
+        "xattrs": {
+          "security.selinux": "753a6f626a6563745f723a73797374656d5f66696c653a733000"
+        },
+        "generation": 0,
+        "extra_isize": 28,
+        "times": {
+          "ctime": [
+            1788015622,
+            0
+          ],
+          "atime": [
+            1788015622,
+            0
+          ],
+          "mtime": [
+            1788015622,
+            0
+          ],
+          "crtime": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "system/vendor/etc/init/hw/init.qcom.power.rc": {
+      "sha256": "5c0f92221adf7b7bb701525011cfe48cb8120339c3d5988f1a1bb4669b2d1a6f",
+      "bytes": 3846,
+      "metadata": {
+        "inode": 3075,
+        "mode": 420,
+        "flags": "0x80080",
+        "uid": 0,
+        "gid": 0,
+        "size": 3846,
+        "xattrs": {
+          "security.selinux": "753a6f626a6563745f723a76656e646f725f636f6e666967735f66696c653a733000"
+        },
+        "generation": 0,
+        "extra_isize": 28,
+        "times": {
+          "ctime": [
+            1786130252,
+            0
+          ],
+          "atime": [
+            1786130252,
+            0
+          ],
+          "mtime": [
+            1786130252,
+            0
+          ],
+          "crtime": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "system/vendor/etc/init/android.hardware.power@1.2-service-qti.rc": {
+      "sha256": "410c025f73216694ccfe81c9e1e9e979af3edecd68f41574e2d47a35820d5453",
+      "bytes": 638,
+      "metadata": {
+        "inode": 3069,
+        "mode": 420,
+        "flags": "0x80080",
+        "uid": 0,
+        "gid": 0,
+        "size": 638,
+        "xattrs": {
+          "security.selinux": "753a6f626a6563745f723a76656e646f725f636f6e666967735f66696c653a733000"
+        },
+        "generation": 0,
+        "extra_isize": 28,
+        "times": {
+          "ctime": [
+            1230768000,
+            0
+          ],
+          "atime": [
+            1230768000,
+            0
+          ],
+          "mtime": [
+            1230768000,
+            0
+          ],
+          "crtime": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "system/vendor/bin/a37-power-profile.sh": {
+      "sha256": "3db957362dfbc41fd8941df30fab0fc87ce55f83976f266cdbeace777aa3d618",
+      "bytes": 3549,
+      "metadata": {
+        "inode": 3748,
+        "mode": 493,
+        "flags": "0x80080",
+        "uid": 0,
+        "gid": 2000,
+        "size": 3549,
+        "xattrs": {
+          "security.selinux": "753a6f626a6563745f723a7174695f696e69745f7368656c6c5f657865633a733000"
+        },
+        "generation": 0,
+        "extra_isize": 28,
+        "times": {
+          "ctime": [
+            1785949025,
+            0
+          ],
+          "atime": [
+            1785949025,
+            0
+          ],
+          "mtime": [
+            1785949025,
+            0
+          ],
+          "crtime": [
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "system/vendor/bin/hw/android.hardware.power@1.2-service-qti": {
+      "sha256": "369405405bd19dbaaaaf0aa185ac439b36363586af2d660606a3ebf01c8df9d9",
+      "bytes": 34683,
+      "metadata": {
+        "inode": 2884,
+        "mode": 493,
+        "flags": "0x80080",
+        "uid": 0,
+        "gid": 2000,
+        "size": 34683,
+        "xattrs": {
+          "security.selinux": "753a6f626a6563745f723a68616c5f706f7765725f64656661756c745f657865633a733000"
+        },
+        "generation": 0,
+        "extra_isize": 28,
+        "times": {
+          "ctime": [
+            1230768000,
+            0
+          ],
+          "atime": [
+            1230768000,
+            0
+          ],
+          "mtime": [
+            1230768000,
+            0
+          ],
+          "crtime": [
+            0,
+            0
+          ]
+        }
+      }
+    }
+  },
+  "transfer": {
+    "blocks": 698112,
+    "new_bytes": 1464315904,
+    "transfer_commands": 702
+  },
+  "brotli_quality": 9,
+  "system_dat_sha256": "ebc21247fe2d84eddefa4004e9ad36a81ceb59761c4ca4a9efbc8681d59a2f3d",
+  "zip_bytes": 558713277,
+  "zip_sha256": "5e68861799878e38766375932111f8af0d3c175582297ba749cc087efce3bf38",
+  "system_brotli_bytes": 549517019
+}
