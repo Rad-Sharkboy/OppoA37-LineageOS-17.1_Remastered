@@ -101,11 +101,11 @@ int a37_apply(int profile)
         if (!write_number("/sys/class/kgsl/kgsl-3d0/devfreq/min_freq", floor)) failed++;
     } else failed++;
     if (!write_text("/sys/devices/system/cpu/cpufreq/interactive/hispeed_freq",
-                    performance ? "1209600" : "998400")) failed++;
+                    performance ? "1209600" : "800000")) failed++;
     if (!write_text("/sys/devices/system/cpu/cpufreq/interactive/target_loads",
         performance ?
         "1 200000:25 400000:35 533333:45 800000:55 998400:60 1094400:65 1152000:70 1209600:80" :
-        "1 200000:25 400000:35 533333:45 800000:55 998400:65 1094400:65 1152000:70 1209600:80")) failed++;
+        "1 200000:25 400000:35 533333:45 800000:65 998400:65 1094400:65 1152000:70 1209600:80")) failed++;
     if (!write_text("/sys/class/kgsl/kgsl-3d0/default_pwrlevel",
                     performance ? "0" : "1")) failed++;
     if (!write_text("/sys/class/kgsl/kgsl-3d0/idle_timer", performance ? "500" : "80")) failed++;

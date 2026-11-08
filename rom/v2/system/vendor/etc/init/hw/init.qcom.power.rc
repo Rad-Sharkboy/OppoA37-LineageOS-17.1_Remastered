@@ -24,15 +24,15 @@ on enable-low-power
     write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 95
     write /sys/devices/system/cpu/cpufreq/interactive/timer_rate 40000
     
-    # Initial boost target of 998.4 MHz; maximum frequency remains available.
-    write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 998400
+    # E011: 800 MHz boost; maximum retained.
+    write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 800000
     
     write /sys/devices/system/cpu/cpufreq/interactive/io_is_busy 0
     write /sys/module/cpu_boost/parameters/input_boost_ms 40
     write /sys/module/cpu_boost/parameters/input_boost_freq 800000
     
-    # Progressive Load Stepping: 45%->400MHz | 60%->800MHz | 75%->998MHz | 88%->1.09GHz | 95%->1.2GHz
-    write /sys/devices/system/cpu/cpufreq/interactive/target_loads "45 400000:60 800000:75 998400:88 1094400:95"
+    # E011: retain low-load steps; allow more work at 800 MHz.
+    write /sys/devices/system/cpu/cpufreq/interactive/target_loads "1 200000:25 400000:35 533333:45 800000:65 998400:65 1094400:65 1152000:70 1209600:80"
     write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 40000
     write /sys/devices/system/cpu/cpufreq/interactive/max_freq_hysteresis 40000
 

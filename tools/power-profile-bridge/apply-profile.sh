@@ -5,10 +5,10 @@ profile=${1:-}
 case "$profile" in 0|1|2) ;; *) echo 'No verified active Power HAL profile.'; exit 1;; esac
 cpu_floor=200000
 gpu_floor=200000000
-hispeed=998400
+hispeed=800000
 timer=80
 gpu_wake=1
-loads='1 200000:25 400000:35 533333:45 800000:55 998400:65 1094400:65 1152000:70 1209600:80'
+loads='1 200000:25 400000:35 533333:45 800000:65 998400:65 1094400:65 1152000:70 1209600:80'
 if [ "$profile" = 2 ]; then
     hispeed=1209600
     timer=500
