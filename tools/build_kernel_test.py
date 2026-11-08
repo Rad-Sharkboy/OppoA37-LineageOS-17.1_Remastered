@@ -3,6 +3,7 @@
 import argparse, hashlib, json, re, struct, zipfile
 from pathlib import Path
 from build_v21 import boot_image, digest, run, ROOT
+from kernel_test_dt import patch_low_cpu_corner
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
@@ -16,6 +17,7 @@ def main():
     p.add_argument('--update-binary',type=Path,required=True)
     p.add_argument('--update-binary-sha',required=True)
     p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--dt-profile',choices=['a37-low-cpu-12m5'])
     a=p.parse_args()
     if not re.fullmatch(r'E[0-9]{3}',a.tag):raise ValueError('Invalid test tag')
     for root in [ROOT,a.kernel_source]:
@@ -34,7 +36,8 @@ def main():
     if page!=2048 or ss or not dt:raise ValueError('Unexpected A37 layout')
     align=lambda n:(n+page-1)//page*page
     end=page+align(ks)+align(rs)+align(dt)
-    if end>len(base) or any(base[end:]):raise ValueError('Review boot footer')
+    if end>len(base):raise ValueError('Boot components exceed capture')
+    if any(base[end:]) and hashlib.sha256(base[end:]).hexdigest()!=inputs.get('unused_tail_sha256'):raise ValueError('Review boot footer')
     ramdisk=base[page+align(ks):page+align(ks)+rs]
     tree=base[page+align(ks)+align(rs):page+align(ks)+align(rs)+dt]
     for data,key in [(base[page:page+ks],'kernel_sha256'),(ramdisk,'ramdisk_sha256'),(tree,'dt_sha256')]:
@@ -44,6 +47,17 @@ def main():
     image=a.output/'boot.img'
     result=boot_image(original,a.kernel,image)
     if result['ramdisk_sha256']!=inputs['ramdisk_sha256'] or result['dt_sha256']!=inputs['dt_sha256']:raise ValueError('Boot components changed')
+    if a.dt_profile:
+        patched,change=patch_low_cpu_corner(tree)
+        data=bytearray(image.read_bytes())
+        offset=page+align(len(kernel))+align(rs)
+        data[offset:offset+dt]=patched
+        boot_id=hashlib.sha1()
+        for component in [kernel,ramdisk,b'',patched]:
+            boot_id.update(component);boot_id.update(struct.pack('<I',len(component)))
+        data[576:608]=boot_id.digest()+bytes(12)
+        image.write_bytes(data)
+        result.update(sha256=digest(image),dt_sha256=hashlib.sha256(patched).hexdigest(),dt_patch=change)
     (a.output/'boot.sha256').write_text(result['sha256']+'\n')
     (a.output/'base.sha256').write_text(inputs['partition_sha256']+'\n')
     script=ROOT/'tools/kernel-test/flash.sh'
