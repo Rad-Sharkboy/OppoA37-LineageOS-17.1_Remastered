@@ -1,6 +1,7 @@
 #!/sbin/sh
 set -eu
 fail() { echo "Kernel test: $*" >&2; exit 1; }
+case "${1:-}" in ''|--check) ;; *) fail 'Unknown installer argument.';; esac
 for tool in getprop readlink blockdev sha256sum wc dd sync cmp; do
     command -v "$tool" >/dev/null 2>&1 || fail "Recovery needs $tool."
 done
@@ -34,6 +35,7 @@ if cmp "$image" "$readback" >/dev/null 2>&1; then
 fi
 actual=$(sha256sum "$boot_block")
 [ "${actual%% *}" = "$base" ] || fail 'Boot changed since this test was prepared; repackage it to preserve your current Magisk setup.'
+[ "${1:-}" != --check ] || exit 0
 dd if="$image" of="$boot_block" bs=2048 || fail 'Boot write failed.'
 sync || fail 'Boot sync failed.'
 dd if="$boot_block" of="$readback" bs=2048 count="$((bytes / 2048))" || fail 'Boot readback failed.'

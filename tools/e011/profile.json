@@ -1,0 +1,27 @@
+{
+  "original_hal_sha256": "0acfe2bafdcffea00b492f9cd21932b5cf606bc49e0a29e69c64c401a555db15",
+  "hal_sha256": "bb6df2fb5db39b182b4429c91ad3d63396a2323347e87d5bcb1691a4949def91",
+  "targets": {
+    "system/vendor/bin/hw/android.hardware.power@1.2-service-qti": {
+      "base_sha256": "36da00a282d6a03ac51bc58b7382b1f7548027071e95a58a0a7fbaabdc86c9c5",
+      "uid": 0,
+      "gid": 2000,
+      "mode": 493,
+      "selabel": "u:object_r:hal_power_default_exec:s0"
+    },
+    "system/vendor/bin/a37-power-profile.sh": {
+      "base_sha256": "a0bac869650934e63e43bbb480f00a3331c6ce40a382e4f8f71a3d0f8c5b7ab7",
+      "uid": 0,
+      "gid": 2000,
+      "mode": 493,
+      "selabel": "u:object_r:qti_init_shell_exec:s0"
+    },
+    "system/vendor/etc/init/hw/init.qcom.power.rc": {
+      "base_sha256": "9f20c00aa8836d28bf83b3886655204513f023dfc18797f89be262c28503d854",
+      "uid": 0,
+      "gid": 0,
+      "mode": 420,
+      "selabel": "u:object_r:vendor_configs_file:s0"
+    }
+  }
+}
