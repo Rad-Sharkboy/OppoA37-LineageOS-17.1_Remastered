@@ -3,7 +3,7 @@
 import argparse, hashlib, json, re, struct, zipfile
 from pathlib import Path
 from build_v21 import boot_image, digest, run, ROOT
-from kernel_test_dt import patch_low_cpu_corner
+from kernel_test_dt import patch_low_cpu_corner, patch_active_cpu_floors
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
@@ -17,7 +17,7 @@ def main():
     p.add_argument('--update-binary',type=Path,required=True)
     p.add_argument('--update-binary-sha',required=True)
     p.add_argument('--output',type=Path,required=True)
-    p.add_argument('--dt-profile',choices=['a37-low-cpu-12m5'])
+    p.add_argument('--dt-profile',choices=['a37-low-cpu-12m5','a37-active-cpu-12m5'])
     a=p.parse_args()
     if not re.fullmatch(r'E[0-9]{3}',a.tag):raise ValueError('Invalid test tag')
     for root in [ROOT,a.kernel_source]:
@@ -48,7 +48,8 @@ def main():
     result=boot_image(original,a.kernel,image)
     if result['ramdisk_sha256']!=inputs['ramdisk_sha256'] or result['dt_sha256']!=inputs['dt_sha256']:raise ValueError('Boot components changed')
     if a.dt_profile:
-        patched,change=patch_low_cpu_corner(tree)
+        transform={'a37-low-cpu-12m5':patch_low_cpu_corner,'a37-active-cpu-12m5':patch_active_cpu_floors}[a.dt_profile]
+        patched,change=transform(tree)
         data=bytearray(image.read_bytes())
         offset=page+align(len(kernel))+align(rs)
         data[offset:offset+dt]=patched

@@ -40,13 +40,16 @@ def properties(dtb):
             raise ValueError('Invalid FDT token')
     raise ValueError('Missing FDT end')
 
-def patch_low_cpu_corner(tree):
+def qcdt_nodes(tree):
     if tree[:4]!=b'QCDT' or struct.unpack_from('<2I',tree,4)!=(2,1):raise ValueError('Expected single-entry A37 QCDT v2')
     start=tree.find(b'\xd0\x0d\xfe\xed')
     if start!=2048:raise ValueError('Unexpected DTB position')
     total=struct.unpack_from('>I',tree,start+4)[0]
     if total!=207477 or start+total>len(tree):raise ValueError('Unexpected A37 DTB size')
-    dtb=tree[start:start+total];nodes=properties(dtb)
+    return start,properties(tree[start:start+total])
+
+def patch_low_cpu_corner(tree):
+    start,nodes=qcdt_nodes(tree)
     def node_named(name):
         paths=[p for p,a in nodes.items() if a.get('regulator-name',(0,b''))[1]==name+b'\0']
         if len(paths)!=1:raise ValueError('Regulator missing or ambiguous')
@@ -75,3 +78,19 @@ def patch_low_cpu_corner(tree):
         cells.append({'node':node,'property':key,'offset':offset,'from_uv':1050000,'to_uv':1037500})
     if len(patched)!=len(tree) or any(a!=b and i not in allowed for i,(a,b) in enumerate(zip(tree,patched))):raise ValueError('Unrelated DT bytes changed')
     return bytes(patched),{'profile':'a37-low-cpu-12m5','cells':cells}
+
+def patch_active_cpu_floors(tree):
+    start,nodes=qcdt_nodes(tree)
+    paths=[p for p,a in nodes.items() if a.get('regulator-name',(0,b''))[1]==b'apc_corner\0']
+    if len(paths)!=1:raise ValueError('CPR node missing or ambiguous')
+    node=paths[0];offset,value=nodes[node]['qcom,cpr-voltage-floor']
+    if value!=struct.pack('>3I',1037500,1050000,1162500):raise ValueError('Expected E009 CPU floors')
+    if nodes[node]['qcom,cpr-apc-volt-step'][1]!=struct.pack('>I',12500):raise ValueError('Unexpected regulator step')
+    patched=bytearray(tree);cells=[];allowed=set()
+    for index,old,new in [(1,1050000,1037500),(2,1162500,1150000)]:
+        position=start+offset+index*4
+        struct.pack_into('>I',patched,position,new)
+        allowed.update(range(position,position+4))
+        cells.append({'node':node,'property':'qcom,cpr-voltage-floor','offset':position,'from_uv':old,'to_uv':new})
+    if len(patched)!=len(tree) or any(a!=b and i not in allowed for i,(a,b) in enumerate(zip(tree,patched))):raise ValueError('Unrelated DT bytes changed')
+    return bytes(patched),{'profile':'a37-active-cpu-12m5','cells':cells}
