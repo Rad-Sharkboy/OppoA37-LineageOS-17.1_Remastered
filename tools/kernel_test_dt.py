@@ -45,7 +45,7 @@ def qcdt_nodes(tree):
     start=tree.find(b'\xd0\x0d\xfe\xed')
     if start!=2048:raise ValueError('Unexpected DTB position')
     total=struct.unpack_from('>I',tree,start+4)[0]
-    if total!=207477 or start+total>len(tree):raise ValueError('Unexpected A37 DTB size')
+    if total<40 or start+total>len(tree):raise ValueError('Unexpected A37 DTB size')
     return start,properties(tree[start:start+total])
 
 def patch_low_cpu_corner(tree):
@@ -94,3 +94,56 @@ def patch_active_cpu_floors(tree):
         cells.append({'node':node,'property':'qcom,cpr-voltage-floor','offset':position,'from_uv':old,'to_uv':new})
     if len(patched)!=len(tree) or any(a!=b and i not in allowed for i,(a,b) in enumerate(zip(tree,patched))):raise ValueError('Unrelated DT bytes changed')
     return bytes(patched),{'profile':'a37-active-cpu-12m5','cells':cells}
+
+def patch_cpu_plan(tree):
+    start,nodes=qcdt_nodes(tree)
+    total=struct.unpack_from('>I',tree,start+4)[0]
+    if total!=207477:raise ValueError('Expected preserved E010 DTB')
+    dtb=bytearray(tree[start:start+total])
+    cpr=[p for p,a in nodes.items() if a.get('regulator-name',(0,b''))[1]==b'apc_corner\0']
+    clocks=[p for p,a in nodes.items() if b'qcom,clock-a53-8916\0' in a.get('compatible',(0,b''))[1]]
+    if len(cpr)!=1 or len(clocks)!=1:raise ValueError('CPU nodes missing or ambiguous')
+    cpr=cpr[0];clock=clocks[0]
+    name='qcom,cpr-virtual-corner-quotient-adjustment'
+    if name in nodes[cpr]:raise ValueError('CPU target adjustment already present')
+    if nodes[cpr]['qcom,cpr-voltage-floor'][1]!=struct.pack('>3I',1037500,1037500,1150000):raise ValueError('Expected E010 floors')
+    changes=[]
+    def word(node,key,index,old,new):
+        offset,data=nodes[node][key]
+        if struct.unpack_from('>I',data,index*4)[0]!=old:raise ValueError('Unexpected CPU rate')
+        struct.pack_into('>I',dtb,offset+index*4,new)
+        changes.append({'node':node,'property':key,'index':index,'from':old,'to':new})
+    keys=['qcom,speed0-bin-v0','qcom,speed1-bin-v0','qcom,speed3-bin-v0',
+          'qcom,speed0-bin-v1','qcom,speed2-bin-v1','qcom,speed3-bin-v1']
+    for key in keys:
+        if struct.unpack_from('>I',nodes[clock][key][1],28)[0]!=3:raise ValueError('Unexpected 533 MHz corner')
+        word(clock,key,6,533333000,533333333)
+    word(cpr,'qcom,cpr-corner-frequency-map',5,533330000,533333333)
+    header=list(struct.unpack_from('>10I',dtb))
+    strings=header[3];structure=header[2]
+    if strings+header[8]!=total or structure+header[9]>strings:raise ValueError('Review FDT layout')
+    insertion=nodes[cpr]['qcom,cpr-voltage-floor'][0]-12
+    if not structure<=insertion<structure+header[9] or struct.unpack_from('>I',dtb,insertion)[0]!=3:raise ValueError('Invalid property insertion point')
+    encoded_name=name.encode()+b'\0'
+    value=struct.pack('>8i',0,0,0,0,0,-26,-20,-13)
+    token=struct.pack('>3I',3,len(value),header[8])+value
+    rebuilt=bytearray(dtb[:insertion]+token+dtb[insertion:]+encoded_name)
+    header[1]=len(rebuilt);header[3]+=len(token);header[8]+=len(encoded_name);header[9]+=len(token)
+    struct.pack_into('>10I',rebuilt,0,*header)
+    if start+len(rebuilt)>len(tree) or any(tree[start+total:]):raise ValueError('Insufficient clean QCDT padding')
+    entries=[p for p in range(12,start-7,4) if struct.unpack_from('<2I',tree,p)==(start,total)]
+    if len(entries)!=1:raise ValueError('QCDT size field missing or ambiguous')
+    result=bytearray(tree)
+    struct.pack_into('<I',result,entries[0]+4,len(rebuilt))
+    result[start:start+len(rebuilt)]=rebuilt
+    after=properties(rebuilt)
+    if after.keys()!=nodes.keys():raise ValueError('FDT nodes changed')
+    expected={(c['node'],c['property']) for c in changes}
+    for node,props in nodes.items():
+        if set(after[node])!=set(props)|({name} if node==cpr else set()):raise ValueError('FDT property set changed')
+        for key,(_,data) in props.items():
+            actual=after[node][key][1]
+            if (node,key) not in expected and actual!=data:raise ValueError('Unrelated FDT payload changed')
+    if after[cpr][name][1]!=value:raise ValueError('Target trim differs')
+    return bytes(result),{'profile':'a37-cpu-plan-e011','cells':changes,'new_property':name,
+                          'dtb_bytes':len(rebuilt),'trim_counts':[0,0,0,0,0,26,20,13]}
