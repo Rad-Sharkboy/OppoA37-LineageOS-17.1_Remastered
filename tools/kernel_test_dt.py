@@ -147,3 +147,33 @@ def patch_cpu_plan(tree):
     if after[cpr][name][1]!=value:raise ValueError('Target trim differs')
     return bytes(result),{'profile':'a37-cpu-plan-e011','cells':changes,'new_property':name,
                           'dtb_bytes':len(rebuilt),'trim_counts':[0,0,0,0,0,26,20,13]}
+
+def patch_cpu_efficiency_e012(tree):
+    start,nodes=qcdt_nodes(tree)
+    cpr=[p for p,a in nodes.items() if a.get('regulator-name',(0,b''))[1]==b'apc_corner\0']
+    if len(cpr)!=1:raise ValueError('CPR node missing or ambiguous')
+    cpr=cpr[0];supply=nodes[cpr]['vdd-apc-supply'][1]
+    rails=[p for p,a in nodes.items() if any(a.get(key,(0,b''))[1]==supply for key in ['phandle','linux,phandle'])]
+    if len(rails)!=1:raise ValueError('CPU supply missing or ambiguous')
+    s2=rails[0]
+    if nodes[s2]['regulator-name'][1]!=b'8916_s2\0':raise ValueError('Unexpected CPU supply')
+    expected={
+      (cpr,'qcom,cpr-voltage-floor'):struct.pack('>3I',1037500,1037500,1150000),
+      (cpr,'qcom,cpr-voltage-ceiling'):struct.pack('>3I',1037500,1150000,1350000),
+      (s2,'regulator-min-microvolt'):struct.pack('>I',1037500),
+      (cpr,'qcom,cpr-virtual-corner-quotient-adjustment'):struct.pack('>8i',0,0,0,0,0,-26,-20,-13),
+    }
+    patched=bytearray(tree);cells=[];allowed=set()
+    for (node,key),old in expected.items():
+        offset,data=nodes[node][key]
+        if data!=old:raise ValueError('Expected E011 CPU plan: '+key)
+        is_target=key=='qcom,cpr-virtual-corner-quotient-adjustment'
+        index=7 if is_target else 0
+        old_value=-13 if is_target else 1037500
+        new_value=-39 if is_target else 1025000
+        offset+=start+index*4
+        struct.pack_into('>i' if is_target else '>I',patched,offset,new_value)
+        allowed.update(range(offset,offset+4))
+        cells.append({'node':node,'property':key,'offset':offset,'from':old_value,'to':new_value})
+    if len(patched)!=len(tree) or any(a!=b and i not in allowed for i,(a,b) in enumerate(zip(tree,patched))):raise ValueError('Unrelated DT bytes changed')
+    return bytes(patched),{'profile':'a37-cpu-efficiency-e012','cells':cells}
