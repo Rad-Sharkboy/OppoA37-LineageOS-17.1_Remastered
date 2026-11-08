@@ -4,7 +4,7 @@
 Requires debugfs/e2fsck/dumpe2fs, brotli and Python 3. Output must be new.
 No Android owner, mode or extended attribute is inferred from extracted files.
 """
-import argparse, ctypes, hashlib, json, mmap, os, re, shutil, struct, subprocess, zipfile
+import argparse, hashlib, json, os, re, shutil, struct, subprocess, zipfile
 from pathlib import Path
 
 V2_ZIP_SHA = '446958b5e5ba36b23db6edc6f20caddfd5c0f01f0fb9ce26c294ffd82aa9ed9e'
@@ -109,16 +109,26 @@ def free_ranges(image, output):
 def transfer(image, output):
     count, free = free_ranges(image, output); assert image.stat().st_size == count * BLOCK
     flags = bytearray(count)
-    libc = ctypes.CDLL(None, use_errno=True); libc.fallocate.argtypes = [ctypes.c_int,ctypes.c_int,ctypes.c_longlong,ctypes.c_longlong]
+    # Bound memory and avoid depending on host hole-punch/discard support.
+    zero_chunk = bytes(1024 * 1024)
     with image.open('r+b') as f:
         for a,b in free:
             flags[a:b] = bytes([1]) * (b-a)
-            if libc.fallocate(f.fileno(), 3, a*BLOCK, (b-a)*BLOCK): raise OSError(ctypes.get_errno(), 'Cannot normalize free blocks')
+            f.seek(a * BLOCK)
+            remaining = (b-a) * BLOCK
+            while remaining:
+                chunk = zero_chunk[:min(remaining, len(zero_chunk))]
+                if f.write(chunk) != len(chunk): raise OSError('Short free-block write')
+                remaining -= len(chunk)
     runs = {'new': [], 'zero': [], 'erase': free}; zero = bytes(BLOCK)
-    with image.open('rb') as f, mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ) as mm, (output/'system.new.dat').open('wb') as data:
+    with image.open('rb') as f, (output/'system.new.dat').open('wb') as data:
         for i in range(count):
-            if flags[i]: continue
-            chunk = mm[i*BLOCK:(i+1)*BLOCK]; kind = 'zero' if chunk == zero else 'new'
+            if flags[i]:
+                f.seek(BLOCK, 1)
+                continue
+            chunk = f.read(BLOCK)
+            if len(chunk) != BLOCK: raise ValueError('Short image block read')
+            kind = 'zero' if chunk == zero else 'new'
             if runs[kind] and runs[kind][-1][1] == i: runs[kind][-1][1] += 1
             else: runs[kind].append([i,i+1])
             if kind == 'new': data.write(chunk)
