@@ -149,12 +149,20 @@ def transfer(image, output):
     rebuilt.unlink()
     return dict(blocks=count, new_bytes=(output/'system.new.dat').stat().st_size, transfer_commands=len(lines)-4)
 
-def main():
-    ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('baseline',type=Path);ap.add_argument('original_zip',type=Path);ap.add_argument('kernel',type=Path);ap.add_argument('output',type=Path);ap.add_argument('--quality',type=int,default=9,choices=range(0,12));args=ap.parse_args()
+def main(*, release='V2.1', archive_name='Lineage_17.1_REMASTERED_V2.1.zip', kernel_sha=KERNEL_SHA, hal_sha=HAL_SHA, scripts=None, kernel_commit=None):
+    scripts = scripts or ROOT/'tools/v21'
+    ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('baseline',type=Path);ap.add_argument('original_zip',type=Path);ap.add_argument('kernel',type=Path);ap.add_argument('output',type=Path);ap.add_argument('--quality',type=int,default=9,choices=range(0,12));ap.add_argument('--kernel-source',type=Path);args=ap.parse_args()
     for p in [args.baseline,args.original_zip,args.kernel,args.output,ROOT]:
         if any(c.isspace() for c in str(p)): raise ValueError('Use paths without whitespace')
     for tool in ['debugfs','e2fsck','dumpe2fs','brotli']: assert shutil.which(tool),tool
-    if digest(args.original_zip)!=V2_ZIP_SHA or digest(args.baseline/'system.img')!=V2_SYSTEM_SHA or digest(args.kernel)!=KERNEL_SHA: raise ValueError('Pinned input hash mismatch')
+    if digest(args.original_zip)!=V2_ZIP_SHA or digest(args.baseline/'system.img')!=V2_SYSTEM_SHA or digest(args.kernel)!=kernel_sha: raise ValueError('Pinned input hash mismatch')
+    if kernel_commit is not None:
+        if args.kernel_source is None: raise ValueError('E007 requires --kernel-source')
+        if run(['git','-C',args.kernel_source,'rev-parse','HEAD']).stdout.strip()!=kernel_commit:
+            raise ValueError('Kernel source commit mismatch')
+        for repo in [ROOT,args.kernel_source]:
+            if run(['git','-C',repo,'status','--porcelain']).stdout.strip():
+                raise ValueError('Commit source changes before packaging: '+str(repo))
     with zipfile.ZipFile(args.original_zip) as original:
         for name in ['boot.img','META-INF/com/google/android/update-binary']:
             if original.read(name)!=(args.baseline/name).read_bytes(): raise ValueError('Original ZIP component differs: '+name)
@@ -164,7 +172,7 @@ def main():
     edits={}
     targets=['system/build.prop','system/vendor/etc/init/hw/init.qcom.power.rc','system/vendor/etc/init/android.hardware.power@1.2-service-qti.rc','system/vendor/bin/a37-power-profile.sh']
     hal='system/vendor/bin/hw/android.hardware.power@1.2-service-qti';patched=out/'power-hal'
-    run(['sh','-c','. "$1"; a37_patch_hal "$2" "$3"','patch',ROOT/'tools/power-profile-bridge/payload.sh',args.baseline/'extracted'/hal,patched]);assert digest(patched)==HAL_SHA
+    run(['sh','-c','. "$1"; a37_patch_hal "$2" "$3"','patch',ROOT/'tools/power-profile-bridge/payload.sh',args.baseline/'extracted'/hal,patched]);assert digest(patched)==hal_sha
     for name in targets+[hal]:
         exists=name!='system/vendor/bin/a37-power-profile.sh'
         template='/'+name if exists else '/system/vendor/bin/init.qcom.mem.sh'
@@ -178,7 +186,7 @@ def main():
     print('Generating and verifying full OTA block ranges...',flush=True)
     blocks=transfer(image,out)
     run(['e2fsck','-fn',image])
-    manifest={'release':'V2.1','rom_commit':run(['git','-C',ROOT,'rev-parse','HEAD']).stdout.strip(),'source_zip_sha256':V2_ZIP_SHA,'kernel_sha256':KERNEL_SHA,'boot':boot,'system_sha256':digest(image),'edits':edits,'transfer':blocks,'brotli_quality':args.quality}
+    manifest={'release':release,'rom_commit':run(['git','-C',ROOT,'rev-parse','HEAD']).stdout.strip(),'source_zip_sha256':V2_ZIP_SHA,'kernel_sha256':kernel_sha,'kernel_commit':kernel_commit,'hal_sha256':hal_sha,'boot':boot,'system_sha256':digest(image),'edits':edits,'transfer':blocks,'brotli_quality':args.quality}
     (out/'build-manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
     print('Compressing Android block payload...',flush=True)
     run(['brotli','-q',str(args.quality),'-w','24',out/'system.new.dat','-o',out/'system.new.dat.br'])
@@ -189,12 +197,12 @@ def main():
         if proc.wait():raise RuntimeError('Brotli readback failed')
     assert decoded.hexdigest()==digest(out/'system.new.dat')
     manifest['system_dat_sha256']=decoded.hexdigest()
-    print('Creating flashable V2.1 ZIP...',flush=True)
-    archive=out/'Lineage_17.1_REMASTERED_V2.1.zip'
+    print('Creating flashable '+release+' ZIP...',flush=True)
+    archive=out/archive_name
     files={name:out/name for name in ['boot.img','boot.sha256','system.new.dat.br','system.transfer.list','system.patch.dat']}
     files['META-INF/com/google/android/update-binary']=args.baseline/'META-INF/com/google/android/update-binary'
-    files['META-INF/com/google/android/updater-script']=ROOT/'tools/v21/updater-script'
-    for name in ['prepare.sh','flash_kernel.sh','cleanup-tuning.sh']:files['META-INF/scripts/'+name]=ROOT/'tools/v21'/name
+    files['META-INF/com/google/android/updater-script']=scripts/'updater-script'
+    for name in ['prepare.sh','flash_kernel.sh','cleanup-tuning.sh']:files['META-INF/scripts/'+name]=scripts/name
     with zipfile.ZipFile(archive,'w',allowZip64=True) as z:
         for name,path in files.items():
             info=zipfile.ZipInfo(name,(2026,10,28,0,0,0));info.create_system=3;info.external_attr=0o100644<<16

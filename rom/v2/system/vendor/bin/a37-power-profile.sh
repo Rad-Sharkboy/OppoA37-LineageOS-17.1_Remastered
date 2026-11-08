@@ -1,5 +1,5 @@
 #!/system/bin/sh
-[ "$(getprop ro.a37.remastered.version)" = 2.1 ] || exit 1
+[ "$(getprop ro.a37.remastered.version)" = 2.1-E007 ] || exit 1
 cleanup_tuning() (
 set -eu
 [ -d /data/adb ] || exit 0
