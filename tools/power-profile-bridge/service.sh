@@ -5,6 +5,7 @@ sleep 300
 [ -d "$MODDIR" ] && [ ! -e "$MODDIR/disable" ] && [ ! -e "$MODDIR/remove" ] || exit 0
 exec > "$MODDIR/last-boot.log" 2>&1
 date
+sh "$MODDIR/post-fs-data.sh"
 profile=$(getprop vendor.a37.profile)
 sh "$MODDIR/apply-profile.sh" "$profile" || exit 1
 # If the user switched profiles during these writes, reconcile once more.

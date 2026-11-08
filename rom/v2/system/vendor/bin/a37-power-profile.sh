@@ -61,12 +61,16 @@ printf '%s\n' "$loads" > /sys/devices/system/cpu/cpufreq/interactive/target_load
 printf '%s\n' "$gpu_wake" > /sys/class/kgsl/kgsl-3d0/default_pwrlevel
 printf '%s\n' "$timer" > /sys/class/kgsl/kgsl-3d0/idle_timer
 )
+grant_hal_controls() (
+set -eu
+for node in /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq /sys/devices/system/cpu/cpufreq/interactive/target_loads /sys/class/kgsl/kgsl-3d0/devfreq/min_freq /sys/class/kgsl/kgsl-3d0/default_pwrlevel; do
+    chown 1000:1000 "$node"
+    chmod 0664 "$node"
+done
+)
 initialize_tuning() (
 set -eu
-chown 1000:1000 /sys/class/kgsl/kgsl-3d0/devfreq/min_freq
-chmod 0664 /sys/class/kgsl/kgsl-3d0/devfreq/min_freq
-chown 1000:1000 /sys/class/kgsl/kgsl-3d0/default_pwrlevel
-chmod 0664 /sys/class/kgsl/kgsl-3d0/default_pwrlevel
+grant_hal_controls
 echo 3 > /sys/class/kgsl/kgsl-3d0/gpu_idler_idleworkload
 echo 40 > /sys/module/cpu_boost/parameters/input_boost_ms
 echo 800000 > /sys/module/cpu_boost/parameters/input_boost_freq
@@ -77,6 +81,7 @@ cleanup_tuning
 initialize_tuning
 [ "$?" = 0 ] || incomplete
 sleep 300 || incomplete
+grant_hal_controls || incomplete
 profile=$(getprop vendor.a37.profile)
 apply_profile "$profile"
 [ "$?" = 0 ] || incomplete
