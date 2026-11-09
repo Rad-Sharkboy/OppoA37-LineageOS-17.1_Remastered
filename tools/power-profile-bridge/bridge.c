@@ -106,6 +106,13 @@ int a37_apply(int profile)
         performance ?
         "1 200000:25 400000:35 533333:45 800000:55 998400:60 1094400:65 1152000:70 1209600:80" :
         "1 200000:25 400000:35 533333:45 800000:65 998400:65 1094400:65 1152000:70 1209600:80")) failed++;
+    if (!write_text("/sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load", "75")) failed++;
+    if (!write_text("/sys/devices/system/cpu/cpufreq/interactive/min_sample_time", "30000")) failed++;
+    if (!write_text("/sys/devices/system/cpu/cpufreq/interactive/timer_rate", "20000")) failed++;
+    if (!write_text("/sys/devices/system/cpu/cpufreq/interactive/timer_slack", "20000")) failed++;
+    if (!write_text("/sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay", "20000")) failed++;
+    if (!write_text("/sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration", "80000")) failed++;
+    if (!write_text("/sys/devices/system/cpu/cpufreq/interactive/io_is_busy", "1")) failed++;
     if (!write_text("/sys/class/kgsl/kgsl-3d0/default_pwrlevel",
                     performance ? "0" : "1")) failed++;
     if (!write_text("/sys/class/kgsl/kgsl-3d0/idle_timer", performance ? "500" : "80")) failed++;

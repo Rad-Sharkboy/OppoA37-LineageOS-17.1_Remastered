@@ -58,12 +58,19 @@ if [ "$profile" = 2 ] || [ "$gpu_floor" -gt "$maximum" ]; then gpu_floor=$maximu
 printf '%s\n' "$gpu_floor" > /sys/class/kgsl/kgsl-3d0/devfreq/min_freq
 printf '%s\n' "$hispeed" > /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
 printf '%s\n' "$loads" > /sys/devices/system/cpu/cpufreq/interactive/target_loads
+printf '%s\n' 75 > /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
+printf '%s\n' 30000 > /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
+printf '%s\n' 20000 > /sys/devices/system/cpu/cpufreq/interactive/timer_rate
+printf '%s\n' 20000 > /sys/devices/system/cpu/cpufreq/interactive/timer_slack
+printf '%s\n' 20000 > /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
+printf '%s\n' 80000 > /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration
+printf '%s\n' 1 > /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
 printf '%s\n' "$gpu_wake" > /sys/class/kgsl/kgsl-3d0/default_pwrlevel
 printf '%s\n' "$timer" > /sys/class/kgsl/kgsl-3d0/idle_timer
 )
 grant_hal_controls() (
 set -eu
-for node in /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq /sys/devices/system/cpu/cpufreq/interactive/target_loads /sys/class/kgsl/kgsl-3d0/devfreq/min_freq /sys/class/kgsl/kgsl-3d0/default_pwrlevel; do
+for node in /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load /sys/devices/system/cpu/cpufreq/interactive/min_sample_time /sys/devices/system/cpu/cpufreq/interactive/timer_rate /sys/devices/system/cpu/cpufreq/interactive/timer_slack /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration /sys/devices/system/cpu/cpufreq/interactive/io_is_busy /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq /sys/devices/system/cpu/cpufreq/interactive/target_loads /sys/class/kgsl/kgsl-3d0/devfreq/min_freq /sys/class/kgsl/kgsl-3d0/default_pwrlevel; do
     chown 1000:1000 "$node"
     chmod 0664 "$node"
 done
@@ -80,7 +87,6 @@ cleanup_tuning
 [ "$?" = 0 ] || { setprop vendor.a37.cleanup incomplete; incomplete; }
 initialize_tuning
 [ "$?" = 0 ] || incomplete
-sleep 300 || incomplete
 grant_hal_controls || incomplete
 profile=$(getprop vendor.a37.profile)
 apply_profile "$profile"

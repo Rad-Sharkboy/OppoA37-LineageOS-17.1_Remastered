@@ -17,23 +17,39 @@ on enable-low-power
     chmod 0664 /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
     chown system system /sys/devices/system/cpu/cpufreq/interactive/target_loads
     chmod 0664 /sys/devices/system/cpu/cpufreq/interactive/target_loads
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
+    chmod 0664 /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
+    chmod 0664 /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/timer_rate
+    chmod 0664 /sys/devices/system/cpu/cpufreq/interactive/timer_rate
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/timer_slack
+    chmod 0664 /sys/devices/system/cpu/cpufreq/interactive/timer_slack
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
+    chmod 0664 /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration
+    chmod 0664 /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration
+    chown system system /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
+    chmod 0664 /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
+    write /sys/devices/system/cpu/cpufreq/interactive/timer_slack 20000
+    write /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration 80000
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 200000
     write /sys/module/msm_thermal/core_control/enabled 1
 
-    write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay "25000 1094400:50000"
-    write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 95
-    write /sys/devices/system/cpu/cpufreq/interactive/timer_rate 40000
+    write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 20000
+    write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 75
+    write /sys/devices/system/cpu/cpufreq/interactive/timer_rate 20000
     
     # E011: 800 MHz boost; maximum retained.
     write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 800000
     
-    write /sys/devices/system/cpu/cpufreq/interactive/io_is_busy 0
+    write /sys/devices/system/cpu/cpufreq/interactive/io_is_busy 1
     write /sys/module/cpu_boost/parameters/input_boost_ms 40
     write /sys/module/cpu_boost/parameters/input_boost_freq 800000
     
     # E011: retain low-load steps; allow more work at 800 MHz.
     write /sys/devices/system/cpu/cpufreq/interactive/target_loads "1 200000:25 400000:35 533333:45 800000:65 998400:65 1094400:65 1152000:70 1209600:80"
-    write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 40000
+    write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 30000
     write /sys/devices/system/cpu/cpufreq/interactive/max_freq_hysteresis 40000
 
     # bring all CPUs online

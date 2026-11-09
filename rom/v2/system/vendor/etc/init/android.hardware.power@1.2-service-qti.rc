@@ -17,5 +17,5 @@ service a37-power-profile /system/bin/sh /vendor/bin/a37-power-profile.sh
     disabled
     oneshot
 
-on property:sys.boot_completed=1
+on property:sys.boot_completed=1 && property:vendor.post_boot.parsed=1
     start a37-power-profile
