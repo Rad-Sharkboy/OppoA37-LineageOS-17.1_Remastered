@@ -48,7 +48,7 @@ def main():
       'package_extract_dir("system-files", "/tmp/a37-e016-system") || abort("Overlay install failed.");']
     directory=target.rsplit('/',1)[0]
     for path,mode in ((directory,'0755'),(target,'0644')):
-        lines.append(f'set_metadata("/tmp/a37-e016-system/{path}", "uid", 0, "gid", 0, "mode", {mode}, "capabilities", 0, "selabel", "u:object_r:vendor_overlay_file:s0") || abort("Overlay metadata failed.");')
+        lines.append(f'set_metadata("/tmp/a37-e016-system/{path}", "uid", 0, "gid", 0, "mode", {mode}, "capabilities", 0, "selabel", "u:object_r:vendor_overlay_file:s0");')
     lines+=['run_program("/tmp/a37-e016/finish-system.sh") == 0 || abort("Overlay readback/finish failed.");',
       'run_program("/tmp/a37-kernel-test/flash.sh") == 0 || abort("Boot write failed.");',
       'ui_print("E016 installed; Magisk retained. Reboot without wiping Data.");','']

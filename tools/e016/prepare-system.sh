@@ -8,7 +8,7 @@ mounted() {
     while read -r source target rest; do [ "$target" != "$1" ] || return 0; done < /proc/mounts
     return 1
 }
-for target in /system_root/system /system/system /system /system_root; do
+for target in "$point" /system_root/system /system/system /system /system_root; do
     if mounted "$target"; then umount "$target" || fail "Cannot unmount $target."; fi
 done
 system_real=$(readlink -f "$system_block")
