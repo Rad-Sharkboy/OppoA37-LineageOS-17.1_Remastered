@@ -1,0 +1,11 @@
+{
+  "framework_sha256": "0e08624a4842ea0bd7819e64c3b865598e3cc1ce20658ea816f57a06445d3908",
+  "resource": "integer/config_autoBrightnessDarkeningLightDebounce",
+  "base_ms": 12000,
+  "target_ms": 8000,
+  "unchanged_ms": {
+    "config_autoBrightnessBrighteningLightDebounce": 3000,
+    "config_autoBrightnessInitialLightSensorRate": 250,
+    "config_autoBrightnessLightSensorRate": 1000
+  }
+}

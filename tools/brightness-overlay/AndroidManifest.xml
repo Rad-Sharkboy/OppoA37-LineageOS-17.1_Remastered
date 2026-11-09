@@ -1,0 +1,6 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.a37.overlay.brightness" android:versionCode="1" android:versionName="E016">
+    <uses-sdk android:minSdkVersion="29" android:targetSdkVersion="29" />
+    <application android:hasCode="false" android:label="A37 brightness timing" />
+    <overlay android:targetPackage="android" android:isStatic="true" android:priority="999" />
+</manifest>
