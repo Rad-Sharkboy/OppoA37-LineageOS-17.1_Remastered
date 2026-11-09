@@ -177,3 +177,18 @@ def patch_cpu_efficiency_e012(tree):
         cells.append({'node':node,'property':key,'offset':offset,'from':old_value,'to':new_value})
     if len(patched)!=len(tree) or any(a!=b and i not in allowed for i,(a,b) in enumerate(zip(tree,patched))):raise ValueError('Unrelated DT bytes changed')
     return bytes(patched),{'profile':'a37-cpu-efficiency-e012','cells':cells}
+
+def patch_cpu_targets_e013(tree):
+    start,nodes=qcdt_nodes(tree)
+    matches=[p for p,a in nodes.items() if a.get('regulator-name',(0,b''))[1]==b'apc_corner\0']
+    if len(matches)!=1:raise ValueError('CPR node missing or ambiguous')
+    node=matches[0];key='qcom,cpr-virtual-corner-quotient-adjustment'
+    if nodes[node]['qcom,cpr-voltage-floor'][1]!=struct.pack('>3I',1025000,1037500,1150000):raise ValueError('Expected E012 voltage limits')
+    offset,value=nodes[node][key]
+    if value!=struct.pack('>8i',0,0,0,0,0,-26,-20,-39):raise ValueError('Expected E012 CPU targets')
+    counts=[0,0,-39,-39,0,-65,-43,-65]
+    replacement=struct.pack('>8i',*counts)
+    patched=bytearray(tree);offset+=start
+    patched[offset:offset+len(value)]=replacement
+    if len(patched)!=len(tree) or any(a!=b and not offset<=i<offset+len(value) for i,(a,b) in enumerate(zip(tree,patched))):raise ValueError('Unrelated DT bytes changed')
+    return bytes(patched),{'profile':'a37-cpu-targets-e013','node':node,'property':key,'offset':offset,'counts':counts}
