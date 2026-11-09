@@ -192,3 +192,35 @@ def patch_cpu_targets_e013(tree):
     patched[offset:offset+len(value)]=replacement
     if len(patched)!=len(tree) or any(a!=b and not offset<=i<offset+len(value) for i,(a,b) in enumerate(zip(tree,patched))):raise ValueError('Unrelated DT bytes changed')
     return bytes(patched),{'profile':'a37-cpu-targets-e013','node':node,'property':key,'offset':offset,'counts':counts}
+
+def patch_gpu_svs_e014(tree):
+    start,nodes=qcdt_nodes(tree)
+    clocks=[p for p,a in nodes.items() if b'qcom,gcc-8916\0' in a.get('compatible',(0,b''))[1]]
+    cpr=[p for p,a in nodes.items() if a.get('regulator-name',(0,b''))[1]==b'apc_corner\0']
+    if len(clocks)!=1 or len(cpr)!=1:raise ValueError('A37 clock/CPR node missing or ambiguous')
+    node=clocks[0];name='qcom,a37-gpu-svs-310'
+    if name in nodes[node]:raise ValueError('GPU trial flag already present')
+    if nodes[cpr[0]]['qcom,cpr-virtual-corner-quotient-adjustment'][1]!=struct.pack('>8i',0,0,-39,-39,0,-65,-43,-65):raise ValueError('Expected E013 CPU targets')
+    total=struct.unpack_from('>I',tree,start+4)[0]
+    old=tree[start:start+total];header=list(struct.unpack_from('>10I',old))
+    strings,string_size=header[3],header[8]
+    if strings+string_size!=total or header[2]+header[9]>strings:raise ValueError('Unexpected FDT block layout')
+    position=nodes[node]['compatible'][0]-12
+    if not header[2]<=position<header[2]+header[9]:raise ValueError('Invalid GPU property insertion')
+    prop=struct.pack('>3I',3,0,string_size);key=name.encode()+b'\0'
+    dtb=bytearray(old[:position]+prop+old[position:]+key)
+    header[1]=len(dtb);header[3]+=len(prop);header[8]+=len(key);header[9]+=len(prop)
+    struct.pack_into('>10I',dtb,0,*header)
+    if start+len(dtb)>len(tree) or any(tree[start+total:start+len(dtb)]):raise ValueError('Insufficient clean QCDT padding')
+    matches=[i for i in range(12,start-7,4) if tree[i:i+8]==struct.pack('<2I',start,total)]
+    if len(matches)!=1:raise ValueError('QCDT entry missing or ambiguous')
+    patched=bytearray(tree);patched[start:start+len(dtb)]=dtb
+    struct.pack_into('<I',patched,matches[0]+4,len(dtb))
+    check=properties(dtb)
+    if check.keys()!=nodes.keys():raise ValueError('Unrelated FDT nodes changed')
+    for path,props in nodes.items():
+        if set(check[path])!=set(props)|({name} if path==node else set()):raise ValueError('Unrelated FDT properties changed')
+        for prop_name,(_,value) in props.items():
+            if check[path][prop_name][1]!=value:raise ValueError('Unrelated FDT value changed')
+    if check[node][name][1]!=b'':raise ValueError('Expected boolean GPU flag')
+    return bytes(patched),{'profile':'a37-gpu-svs-e014','node':node,'property':name,'dtb_bytes':len(dtb)}
