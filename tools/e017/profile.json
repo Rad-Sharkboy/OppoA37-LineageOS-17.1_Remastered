@@ -1,0 +1,12 @@
+{
+  "targets": {
+    "system/etc/init/logd.rc": {
+      "base_sha256": "ff799163e9e8e351ce68c02c85dbe665675b86ffe4ab90fb02df84dcd7a50d70",
+      "sha256": "51f8ca6d1f813d5afa86b3a7a9bd627cb9d081bfec02d990956f54b55f858f04",
+      "uid": 0,
+      "gid": 0,
+      "mode": 420,
+      "selabel": "u:object_r:system_file:s0"
+    }
+  }
+}

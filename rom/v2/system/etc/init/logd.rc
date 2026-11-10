@@ -1,4 +1,5 @@
 service logd /system/bin/logd
+    oneshot
     disabled
     class core
 
