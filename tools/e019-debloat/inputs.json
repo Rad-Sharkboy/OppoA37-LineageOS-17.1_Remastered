@@ -1,0 +1,57 @@
+{
+  "system/framework/framework-res.apk": {
+    "sha256": "0e08624a4842ea0bd7819e64c3b865598e3cc1ce20658ea816f57a06445d3908",
+    "bytes": 45427329,
+    "delete": false
+  },
+  "system/framework/org.lineageos.platform-res.apk": {
+    "sha256": "099797e2dede3c5c51dc0b825684048d11f34a8464c02b095f1102c3a64f57ef",
+    "bytes": 403263,
+    "delete": false
+  },
+  "system/framework/services.jar": {
+    "sha256": "2c5d548d4df02f83ffb231bcd2ca655d9a58bf987097b4b5355811578e939864",
+    "bytes": 11142536,
+    "delete": false
+  },
+  "system/vendor/etc/vintf/manifest.xml": {
+    "sha256": "c27b12bdd35a502e86652b5db68ff2ab2908d8cba3a4266b9adf5e7b2ca668bb",
+    "bytes": 12340,
+    "delete": false
+  },
+  "system/etc/permissions/org.lineageos.trust.xml": {
+    "sha256": "3acb7665fb83f7bdd4be6a3d4f3e4c79aa0ba23909a5d35b8a1fb50219d60d98",
+    "bytes": 998,
+    "delete": true
+  },
+  "system/vendor/etc/init/vendor.lineage.trust@1.0-service.rc": {
+    "sha256": "4ca226dec0f743f82bce371df5c0c703f7a8bd3f0486ca7644b2577562a94c5a",
+    "bytes": 120,
+    "delete": true
+  },
+  "system/vendor/bin/hw/vendor.lineage.trust@1.0-service": {
+    "sha256": "ae393ba45d386d345a53c25dae43dd26c3b5a4a269cd79e45adb4efe092926c6",
+    "bytes": 30224,
+    "delete": true
+  },
+  "system/lib64/vendor.lineage.trust@1.0.so": {
+    "sha256": "4908ca60789c6a4874ade82eb24cefd953c6931dfd41e92051fd332175ef96b6",
+    "bytes": 88064,
+    "delete": true
+  },
+  "system/framework/oat/arm64/services.art": {
+    "sha256": "6b008613d99086947fd317f2a34a28b0554993036e230a643777eeab21cb149e",
+    "bytes": 1642496,
+    "delete": true
+  },
+  "system/framework/oat/arm64/services.odex": {
+    "sha256": "3ac817812b00261e47b64800fa924aa3c06aedaaca725ed4cb33e2b3ddc3ae72",
+    "bytes": 25707368,
+    "delete": true
+  },
+  "system/framework/oat/arm64/services.vdex": {
+    "sha256": "cf284122adb3a52959cc340835a8a71ad19863d4ef28d117564e359ff736adc2",
+    "bytes": 113817,
+    "delete": true
+  }
+}
