@@ -1,0 +1,6 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.a37.overlay.volume" android:versionCode="1" android:versionName="E019">
+    <uses-sdk android:minSdkVersion="29" android:targetSdkVersion="29" />
+    <application android:hasCode="false" android:label="A37 volume position" />
+    <overlay android:targetPackage="com.android.systemui" android:isStatic="true" android:priority="999" />
+</manifest>

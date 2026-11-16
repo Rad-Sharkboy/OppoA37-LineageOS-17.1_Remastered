@@ -1,0 +1,17 @@
+{
+  "package": "com.android.systemui",
+  "apk_sha256": "8e96da01ee36d7763ca18db9b2b82ed1c5591765d851a8be4a45ab30a6c96b0d",
+  "provider": "lineagesettings",
+  "namespace": "secure",
+  "name": "volume_panel_on_left",
+  "value": 1,
+  "original_value": null,
+  "native_selector": "false=RIGHT(5), true=LEFT(3)",
+  "portrait_verified": "up80-portrait.png",
+  "vertical_position": "CENTER_VERTICAL retained, portrait volume_dialog translationY=-80dp",
+  "framework_sha256": "0e08624a4842ea0bd7819e64c3b865598e3cc1ce20658ea816f57a06445d3908",
+  "portrait_offset_dp": -80,
+  "systemui_certificate_sha256": "c8a2e9bccf597c2fb6dc66bee293fc13f2fc47ec77bc6b2b0d52c11f51192ab8",
+  "layout_source_sha256": "680c2217c81c105537167cd3ae2659544b113628d0d25cff2a954d5f94de9e46",
+  "landscape_verified": "baseline-landscape.png / up80-landscape.png"
+}
