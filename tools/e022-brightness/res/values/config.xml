@@ -1,0 +1,9 @@
+<resources>
+    <integer name="config_autoBrightnessDarkeningLightDebounce">8000</integer>
+    <integer-array name="config_ambientBrighteningThresholds">
+        <item>200</item>
+    </integer-array>
+    <integer-array name="config_ambientDarkeningThresholds">
+        <item>300</item>
+    </integer-array>
+</resources>
