@@ -1,0 +1,10 @@
+service a37-e019-setup /system/bin/sh /vendor/bin/a37-e019-postboot.sh
+    class late_start
+    user root
+    group root system
+    seclabel u:r:shell:s0
+    disabled
+    oneshot
+
+on property:sys.boot_completed=1
+    start a37-e019-setup

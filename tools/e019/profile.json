@@ -1,0 +1,265 @@
+{
+  "system_edits": {
+    "system/framework/services.jar": {
+      "base_sha256": "2c5d548d4df02f83ffb231bcd2ca655d9a58bf987097b4b5355811578e939864",
+      "sha256": "13587f3bfd7bf55f7f06cc13f122755f2c0a23b8c1c0c596a5cb55cd974fd1f9",
+      "uid": 0,
+      "gid": 0,
+      "mode": 420,
+      "selabel": "u:object_r:system_file:s0"
+    },
+    "system/vendor/etc/vintf/manifest.xml": {
+      "base_sha256": "c27b12bdd35a502e86652b5db68ff2ab2908d8cba3a4266b9adf5e7b2ca668bb",
+      "sha256": "2b3ec7a1eaeb94a08951ba40afa448334c60731cfb9d2339dbdb1602a53e997d",
+      "uid": 0,
+      "gid": 0,
+      "mode": 420,
+      "selabel": "u:object_r:vendor_configs_file:s0"
+    },
+    "system/product/overlay/A37TrustCleanup/A37TrustCleanup.apk": {
+      "sha256": "cdc6e3aa072ecf40cb21486cabdaeb47b7539d1b13d93ed72e6fe34c6dab386d",
+      "uid": 0,
+      "gid": 0,
+      "mode": 420,
+      "selabel": "u:object_r:vendor_overlay_file:s0"
+    },
+    "system/product/overlay/A37VolumePosition/A37VolumePosition.apk": {
+      "sha256": "befe6b3b4c6031dbb0489e5baeb24ee4f9994ba66f8549b3b6f569b2ea4e9a20",
+      "uid": 0,
+      "gid": 0,
+      "mode": 420,
+      "selabel": "u:object_r:vendor_overlay_file:s0"
+    },
+    "system/vendor/bin/a37-volume-placement.sh": {
+      "sha256": "d44de4a860f5ddfc1fbe59ff6160cf90846d1d7f07c54e1d2dcd00064212e897",
+      "uid": 0,
+      "gid": 2000,
+      "mode": 493,
+      "selabel": "u:object_r:qti_init_shell_exec:s0"
+    },
+    "system/lib/libjpeg.so": {
+      "base_sha256": "593d1fd6cbace55a52154c7bc25cc88cc0e1c6177e28631d139aa0e3c3429ca4",
+      "sha256": "4f621617dfd010ac3bbc9194622539bc7298b9b408541f0b11c9d9c7a831f046",
+      "uid": 0,
+      "gid": 0,
+      "mode": 420,
+      "selabel": "u:object_r:system_lib_file:s0"
+    },
+    "system/lib64/libjpeg.so": {
+      "base_sha256": "2d5b8e87a92f7d1e89df2ca81e7958a19dc81a18e7697999ca3a6fdf56f112ae",
+      "sha256": "06e9b88e5eafb457b2f347edb762607652ba967f0e16abcbb78656a3bcb64f14",
+      "uid": 0,
+      "gid": 0,
+      "mode": 420,
+      "selabel": "u:object_r:system_lib_file:s0"
+    },
+    "system/etc/NOTICE.E019-libjpeg-turbo.txt": {
+      "base_sha256": "-",
+      "sha256": "079e25da3eaf4e4a523131adb1ef9a40093158108ca0cbc5f2665c83067f49c9",
+      "uid": 0,
+      "gid": 0,
+      "mode": 420,
+      "selabel": "u:object_r:system_file:s0"
+    },
+    "system/lib64/libpng.so": {
+      "base_sha256": "d28ea2c3f847f282aa9b0688a316c14105d2b6f2e0edc183facad3c434dc39c4",
+      "sha256": "dfed8602e729e51ba47a8bc3b6b71470bb61aa23350245ef89009c097a356e3d",
+      "uid": 0,
+      "gid": 0,
+      "mode": 420,
+      "selabel": "u:object_r:system_lib_file:s0"
+    },
+    "system/lib64/libz.so": {
+      "base_sha256": "5d54631a86f46de8fc4e1d7bc0ae03424a2e4d853ba85a5cd7a9e6b3db8ee437",
+      "sha256": "0cb0ac39ac4ddfed9d5707e0fe1f724667ec5bdf8fcf80bd2c8d7842410e4d4f",
+      "uid": 0,
+      "gid": 0,
+      "mode": 420,
+      "selabel": "u:object_r:system_lib_file:s0"
+    },
+    "system/etc/NOTICE.E019-zlib-1.4.txt": {
+      "sha256": "e32ff4e00d9d94930537635291da39e7e612703334bf6fde8c7f1686fe8a45a2",
+      "uid": 0,
+      "gid": 0,
+      "mode": 420,
+      "selabel": "u:object_r:system_file:s0"
+    },
+    "system/etc/NOTICE.E019-libpng-1.6.59.txt": {
+      "sha256": "bdb0a645ea18c60507d0368379b1ac5474b92255fcc2d115e07486a7672ba526",
+      "uid": 0,
+      "gid": 0,
+      "mode": 420,
+      "selabel": "u:object_r:system_file:s0"
+    },
+    "system/vendor/bin/a37-e019-postboot.sh": {
+      "sha256": "31b3088a3ec000c0393b5744df61e39e14d280035e6402d441cf81d7f4f04a27",
+      "uid": 0,
+      "gid": 2000,
+      "mode": 493,
+      "selabel": "u:object_r:qti_init_shell_exec:s0"
+    },
+    "system/vendor/etc/init/a37-e019.rc": {
+      "sha256": "7c3eb5d2d7e7b1de4a70d85adeae7bf4158f006e7257a62883985f84c97d5b14",
+      "uid": 0,
+      "gid": 0,
+      "mode": 420,
+      "selabel": "u:object_r:vendor_configs_file:s0"
+    }
+  },
+  "deletions": {
+    "system/etc/permissions/org.lineageos.trust.xml": {
+      "sha256": "3acb7665fb83f7bdd4be6a3d4f3e4c79aa0ba23909a5d35b8a1fb50219d60d98",
+      "bytes": 998,
+      "delete": true
+    },
+    "system/vendor/etc/init/vendor.lineage.trust@1.0-service.rc": {
+      "sha256": "4ca226dec0f743f82bce371df5c0c703f7a8bd3f0486ca7644b2577562a94c5a",
+      "bytes": 120,
+      "delete": true
+    },
+    "system/vendor/bin/hw/vendor.lineage.trust@1.0-service": {
+      "sha256": "ae393ba45d386d345a53c25dae43dd26c3b5a4a269cd79e45adb4efe092926c6",
+      "bytes": 30224,
+      "delete": true
+    },
+    "system/lib64/vendor.lineage.trust@1.0.so": {
+      "sha256": "4908ca60789c6a4874ade82eb24cefd953c6931dfd41e92051fd332175ef96b6",
+      "bytes": 88064,
+      "delete": true
+    },
+    "system/framework/oat/arm64/services.art": {
+      "sha256": "6b008613d99086947fd317f2a34a28b0554993036e230a643777eeab21cb149e",
+      "bytes": 1642496,
+      "delete": true
+    },
+    "system/framework/oat/arm64/services.odex": {
+      "sha256": "3ac817812b00261e47b64800fa924aa3c06aedaaca725ed4cb33e2b3ddc3ae72",
+      "bytes": 25707368,
+      "delete": true
+    },
+    "system/framework/oat/arm64/services.vdex": {
+      "sha256": "cf284122adb3a52959cc340835a8a71ad19863d4ef28d117564e359ff736adc2",
+      "bytes": 113817,
+      "delete": true
+    }
+  },
+  "components": {
+    "debloat": {
+      "disable_components": [
+        "org.lineageos.lineageparts/.trust.TrustOnBoardingActivity",
+        "org.lineageos.lineageparts/.trust.TrustPreferences"
+      ],
+      "precondition": {
+        "/proc/sys/kernel/deny_new_usb": "0"
+      },
+      "changes": {
+        "keyguard": "return after unchanged state/callback prefix; keep tail/try ranges",
+        "services_preopt": "invalidate only services artifacts; ART settings unchanged",
+        "shared_framework_classes": "retained inert to preserve SDK ABI/signatures"
+      },
+      "validation": "exact inputs; DEX prefix/tail/SHA1/Adler; dexdump checksum; single-resource signed static RRO; VINTF removes only Trust HAL"
+    },
+    "volume": {
+      "changes": {
+        "volume_panel_side": "left via native Lineage secure setting, once-only migration",
+        "portrait_vertical_offset_dp": -80,
+        "landscape": "original layout retained"
+      },
+      "validation": "exact SystemUI/framework inputs; one portrait layout; all original compiled attributes preserved; no DEX; signature matches original SystemUI",
+      "phone_verification": {
+        "portrait_ringer_top_px": 179,
+        "portrait_main_top_px": 315,
+        "original_ringer_top_px": 339,
+        "original_main_top_px": 475,
+        "density": 2,
+        "offset_px": -160,
+        "landscape": "preview off/on vertical positions match; no added clipping"
+      }
+    },
+    "jpeg": {
+      "component": "libjpeg-turbo",
+      "version": "3.2.1",
+      "source_url": "https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/3.2.1/libjpeg-turbo-3.2.1.tar.gz",
+      "source_sha256": "c27ad72a68da151177929aa969ae773a2da5ac2af9ce946079314fdac8cece7f",
+      "tag_commit": "7b4993786d856cbccabfc0ed2f923ba000e326cc",
+      "release_date": "2026-10-27",
+      "android_api": 29,
+      "ndk": "28.2.13676358",
+      "jpeg_lib_version": 62,
+      "simd": "NEON",
+      "export_policy": "unversioned, like original Android build",
+      "files": [
+        {
+          "path": "system/lib/libjpeg.so",
+          "sha256": "4f621617dfd010ac3bbc9194622539bc7298b9b408541f0b11c9d9c7a831f046",
+          "size": 448640
+        },
+        {
+          "path": "system/lib64/libjpeg.so",
+          "sha256": "06e9b88e5eafb457b2f347edb762607652ba967f0e16abcbb78656a3bcb64f14",
+          "size": 622192
+        },
+        {
+          "path": "system/etc/NOTICE.E019-libjpeg-turbo.txt",
+          "sha256": "079e25da3eaf4e4a523131adb1ef9a40093158108ca0cbc5f2665c83067f49c9",
+          "size": 19008
+        }
+      ]
+    },
+    "png-zlib": {
+      "versions": {
+        "arm64": {
+          "libpng": "1.6.59",
+          "zlib": "1.4"
+        },
+        "arm": {
+          "libpng": "1.6.34",
+          "zlib": "1.2.11"
+        }
+      },
+      "source_pins": {
+        "zlib-1.4": [
+          "https://zlib.net/zlib-1.4.tar.gz",
+          "02dd159783677a749c04adbdd02b55b8a2bcc7e054f51b76b549199a916ad584"
+        ],
+        "libpng-1.6.59": [
+          "https://downloads.sourceforge.net/project/libpng/libpng16/1.6.59/libpng-1.6.59.tar.gz",
+          "86a3e4b501f7f50e392c4e456ea158893e9a595b1c63eb88c7bb9f6cf8772dad"
+        ]
+      },
+      "phone_sample_time_change_pct": {
+        "arm64": {
+          "decode_ms": -0.1,
+          "encode_ms": -7.3,
+          "level1_compress_ms": -21.6,
+          "level6_compress_ms": -15.6,
+          "level6_inflate_ms": 3.0,
+          "crc_ms": -32.8
+        },
+        "tested_arm_crc_ms": 15.9
+      },
+      "validation": "API29, original SONAMEs, scanned ROM imports resolved, isolated phone roundtrip and malformed-input checks passed"
+    }
+  },
+  "directories": {
+    "system/product/overlay/A37TrustCleanup": {
+      "uid": 0,
+      "gid": 0,
+      "mode": 493,
+      "selabel": "u:object_r:vendor_overlay_file:s0"
+    },
+    "system/product/overlay/A37VolumePosition": {
+      "uid": 0,
+      "gid": 0,
+      "mode": 493,
+      "selabel": "u:object_r:vendor_overlay_file:s0"
+    }
+  },
+  "changes": {
+    "volume": "Left in both orientations. Portrait up 80 dp.",
+    "trust": "Remove Lineage Trust service, HAL and startup hooks. Disable its two UI activities.",
+    "jpeg": "Update both Android ABIs to libjpeg-turbo 3.2.1.",
+    "png_zlib": "Update the verified ARM64 pair. Retain original ARM32 pair.",
+    "art": "Remove stale preopt files belonging to the patched services.jar."
+  }
+}
