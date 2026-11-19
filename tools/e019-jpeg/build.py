@@ -72,12 +72,40 @@ def main():
     errors.write_text(error_source.replace(old,
         "/* E019 Android compatibility: retain the original diagnostic export. */\n"
         "const char * const jpeg_std_message_table[] = {", 1))
+    master = source / "src/jdmaster.c"
+    master_source = master.read_text()
+    core = "  if (!cinfo->master->lossless) {\n    /* Compute actual output image dimensions"
+    calc = """  /* Prevent application from calling me at wrong times */
+  if (cinfo->global_state != DSTATE_READY)
+    ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+
+  /* Compute core output image dimensions and DCT scaling choices. */
+  jpeg_core_output_dimensions(cinfo);
+"""
+    compat_calc = """  /* Prevent application from calling me at wrong times */
+  if (cinfo->global_state != DSTATE_READY ||
+      (cinfo->master == NULL && cinfo->num_components != 0))
+    ERREXIT1(cinfo, JERR_BAD_STATE, cinfo->global_state);
+
+  /* Compute core output image dimensions and DCT scaling choices. */
+  jpeg_core_output_dimensions(cinfo);
+
+  /* Android 10 Skia queries dimensions with a zeroed decoder. */
+  if (cinfo->master == NULL)
+    return;
+"""
+    if master_source.count(core) != 1 or master_source.count(calc) != 1:
+        raise SystemExit("Pinned JPEG scaling code changed")
+    master.write_text(master_source.replace(core, core.replace(
+        "!cinfo->master->lossless", "cinfo->master == NULL || !cinfo->master->lossless"
+    ), 1).replace(calc, compat_calc, 1))
     profile = {
         "component": "libjpeg-turbo", "version": VERSION,
         "source_url": SOURCE_URL, "source_sha256": SOURCE_SHA256,
         "tag_commit": TAG_COMMIT, "release_date": "2026-10-27",
         "android_api": 29, "ndk": "28.2.13676358", "jpeg_lib_version": 62,
         "simd": "NEON", "export_policy": "unversioned, like original Android build",
+        "skia_geometry_compat": True,
         "files": [],
     }
     for abi, folder in [("armeabi-v7a", "lib"), ("arm64-v8a", "lib64")]:

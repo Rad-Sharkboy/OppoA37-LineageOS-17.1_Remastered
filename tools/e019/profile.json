@@ -39,7 +39,7 @@
     },
     "system/lib/libjpeg.so": {
       "base_sha256": "593d1fd6cbace55a52154c7bc25cc88cc0e1c6177e28631d139aa0e3c3429ca4",
-      "sha256": "4f621617dfd010ac3bbc9194622539bc7298b9b408541f0b11c9d9c7a831f046",
+      "sha256": "f2bd5648daf7b3850a4fbb812969ac99949d532bd21e0fa78f2c54f3927a85df",
       "uid": 0,
       "gid": 0,
       "mode": 420,
@@ -47,7 +47,7 @@
     },
     "system/lib64/libjpeg.so": {
       "base_sha256": "2d5b8e87a92f7d1e89df2ca81e7958a19dc81a18e7697999ca3a6fdf56f112ae",
-      "sha256": "06e9b88e5eafb457b2f347edb762607652ba967f0e16abcbb78656a3bcb64f14",
+      "sha256": "c18d812241419b6b2ad284cab8ab9de0cb71ff45e5c13e2dcf4ff67db72ffb58",
       "uid": 0,
       "gid": 0,
       "mode": 420,
@@ -188,16 +188,17 @@
       "jpeg_lib_version": 62,
       "simd": "NEON",
       "export_policy": "unversioned, like original Android build",
+      "skia_geometry_compat": true,
       "files": [
         {
           "path": "system/lib/libjpeg.so",
-          "sha256": "4f621617dfd010ac3bbc9194622539bc7298b9b408541f0b11c9d9c7a831f046",
-          "size": 448640
+          "sha256": "f2bd5648daf7b3850a4fbb812969ac99949d532bd21e0fa78f2c54f3927a85df",
+          "size": 448672
         },
         {
           "path": "system/lib64/libjpeg.so",
-          "sha256": "06e9b88e5eafb457b2f347edb762607652ba967f0e16abcbb78656a3bcb64f14",
-          "size": 622192
+          "sha256": "c18d812241419b6b2ad284cab8ab9de0cb71ff45e5c13e2dcf4ff67db72ffb58",
+          "size": 622208
         },
         {
           "path": "system/etc/NOTICE.E019-libjpeg-turbo.txt",
@@ -258,7 +259,7 @@
   "changes": {
     "volume": "Left in both orientations. Portrait up 80 dp.",
     "trust": "Remove Lineage Trust service, HAL and startup hooks. Disable its two UI activities.",
-    "jpeg": "Update both Android ABIs to libjpeg-turbo 3.2.1.",
+    "jpeg": "Update both Android ABIs to libjpeg-turbo 3.2.1 with the Android 10 Skia fix.",
     "png_zlib": "Update the verified ARM64 pair. Retain original ARM32 pair.",
     "art": "Remove stale preopt files belonging to the patched services.jar."
   }

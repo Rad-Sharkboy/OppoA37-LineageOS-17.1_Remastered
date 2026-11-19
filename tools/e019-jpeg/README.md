@@ -16,8 +16,9 @@ python3 tools/e019-jpeg/build.py \
 The output contains `payload/system/lib/libjpeg.so`, the ARM64 counterpart,
 a required upstream notice, and `profile.json` with hashes and original Android
 metadata. The shared-library ABI remains JPEG v6b (62), with unversioned Android
-exports and `libjpeg.so` SONAME. Two small source adaptations disable Unix symbol
-versioning and retain Android's old `jpeg_std_message_table` diagnostic export.
+exports and `libjpeg.so` SONAME. Source adaptations disable Unix symbol
+versioning, retain `jpeg_std_message_table` and support Android 10 Skia's
+dimensions-only thumbnail sizing call.
 TurboJPEG and command-line tools are disabled; upstream's newer 12/16-bit core
 entry points remain because the supported build has no option to remove them.
 
