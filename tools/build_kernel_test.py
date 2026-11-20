@@ -19,7 +19,7 @@ def main():
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--dt-profile',choices=['a37-low-cpu-12m5','a37-active-cpu-12m5','a37-cpu-plan-e011','a37-cpu-efficiency-e012','a37-cpu-targets-e013','a37-gpu-svs-e014'])
     a=p.parse_args()
-    if not re.fullmatch(r'E[0-9]{3}',a.tag):raise ValueError('Invalid test tag')
+    if not re.fullmatch(r'E[0-9]{3}(?:V[1-9][0-9]*)?',a.tag):raise ValueError('Invalid test tag')
     for root in [ROOT,a.kernel_source]:
         if run(['git','-C',root,'status','--porcelain']).stdout.strip():raise ValueError('Commit source before packaging')
     if run(['git','-C',a.kernel_source,'rev-parse','HEAD']).stdout.strip()!=a.kernel_commit:raise ValueError('Unexpected kernel source head')
