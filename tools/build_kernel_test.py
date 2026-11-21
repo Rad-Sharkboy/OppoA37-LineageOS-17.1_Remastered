@@ -10,7 +10,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--tag',required=True)
     p.add_argument('--base',type=Path,required=True)
-    p.add_argument('--also-base',type=Path,help='Exact alternate full boot partition with the same ramdisk and QCDT')
+    p.add_argument('--also-base',type=Path,help='Exact alternate full boot partition with the same ramdisk and a verified QCDT')
     p.add_argument('--board-dtb',type=Path,help='DTC output from the matching A37 kernel source')
     p.add_argument('--base-inputs',type=Path,required=True)
     p.add_argument('--kernel',type=Path,required=True)
@@ -47,20 +47,31 @@ def main():
         if hashlib.sha256(data).hexdigest()!=inputs[key]:raise ValueError('Base component differs: '+key)
     if bool(a.board_dtb) != (a.dt_profile == 'a37-suspend-e024v3'):
         raise ValueError('The A37 suspend profile requires its matching compiled board DTB')
+    patched = tree
+    if a.dt_profile:
+        transforms={'a37-low-cpu-12m5':patch_low_cpu_corner,'a37-active-cpu-12m5':patch_active_cpu_floors,'a37-cpu-plan-e011':patch_cpu_plan,'a37-cpu-efficiency-e012':patch_cpu_efficiency_e012,'a37-cpu-targets-e013':patch_cpu_targets_e013,'a37-gpu-svs-e014':patch_gpu_svs_e014}
+        if a.dt_profile == 'a37-suspend-e024v3':
+            patched,change = patch_suspend_level(tree, a.board_dtb.read_bytes())
+        else:
+            patched,change = transforms[a.dt_profile](tree)
     allowed_bases = [inputs['partition_sha256']]
     if a.also_base:
         other = a.also_base.read_bytes()
         if len(other) != len(base) or other[:8] != base[:8]:
             raise ValueError('Alternate partition layout differs')
-        # Only the kernel size, boot ID and kernel contents may differ.
+        # Both predecessors must use the same boot layout and header settings.
         if other[12:576] != base[12:576] or other[608:page] != base[608:page]:
             raise ValueError('Alternate boot header differs')
         other_kernel_len = struct.unpack_from('<I', other, 8)[0]
         rd = page + align(other_kernel_len)
         dt_offset = rd + align(rs)
         if (not other_kernel_len or dt_offset + align(dt) > len(other) or
-                other[rd:rd + rs] != ramdisk or other[dt_offset:dt_offset + dt] != tree):
-            raise ValueError('Alternate boot ramdisk or QCDT differs')
+                other[rd:rd + rs] != ramdisk):
+            raise ValueError('Alternate boot ramdisk or layout differs')
+        other_tree = other[dt_offset:dt_offset + dt]
+        if other_tree != tree and not (
+                a.dt_profile == 'a37-suspend-e024v3' and other_tree == patched):
+            raise ValueError('Alternate QCDT differs from the verified suspend trees')
         other_digest = hashlib.sha256(other).hexdigest()
         if other_digest == allowed_bases[0]:
             raise ValueError('Duplicate alternate boot partition')
@@ -71,11 +82,6 @@ def main():
     result=boot_image(original,a.kernel,image)
     if result['ramdisk_sha256']!=inputs['ramdisk_sha256'] or result['dt_sha256']!=inputs['dt_sha256']:raise ValueError('Boot components changed')
     if a.dt_profile:
-        transforms={'a37-low-cpu-12m5':patch_low_cpu_corner,'a37-active-cpu-12m5':patch_active_cpu_floors,'a37-cpu-plan-e011':patch_cpu_plan,'a37-cpu-efficiency-e012':patch_cpu_efficiency_e012,'a37-cpu-targets-e013':patch_cpu_targets_e013,'a37-gpu-svs-e014':patch_gpu_svs_e014}
-        if a.dt_profile == 'a37-suspend-e024v3':
-            patched,change = patch_suspend_level(tree, a.board_dtb.read_bytes())
-        else:
-            patched,change = transforms[a.dt_profile](tree)
         data=bytearray(image.read_bytes())
         offset=page+align(len(kernel))+align(rs)
         data[offset:offset+dt]=patched
