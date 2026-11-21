@@ -3,12 +3,15 @@
 import argparse, hashlib, json, re, struct, zipfile
 from pathlib import Path
 from build_v21 import boot_image, digest, run, ROOT
+from kernel_test_suspend import patch_suspend_level
 from kernel_test_dt import patch_low_cpu_corner, patch_active_cpu_floors, patch_cpu_plan, patch_cpu_efficiency_e012, patch_cpu_targets_e013, patch_gpu_svs_e014
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--tag',required=True)
     p.add_argument('--base',type=Path,required=True)
+    p.add_argument('--also-base',type=Path,help='Exact alternate full boot partition with the same ramdisk and QCDT')
+    p.add_argument('--board-dtb',type=Path,help='DTC output from the matching A37 kernel source')
     p.add_argument('--base-inputs',type=Path,required=True)
     p.add_argument('--kernel',type=Path,required=True)
     p.add_argument('--kernel-sha',required=True)
@@ -17,7 +20,7 @@ def main():
     p.add_argument('--update-binary',type=Path,required=True)
     p.add_argument('--update-binary-sha',required=True)
     p.add_argument('--output',type=Path,required=True)
-    p.add_argument('--dt-profile',choices=['a37-low-cpu-12m5','a37-active-cpu-12m5','a37-cpu-plan-e011','a37-cpu-efficiency-e012','a37-cpu-targets-e013','a37-gpu-svs-e014'])
+    p.add_argument('--dt-profile',choices=['a37-low-cpu-12m5','a37-active-cpu-12m5','a37-cpu-plan-e011','a37-cpu-efficiency-e012','a37-cpu-targets-e013','a37-gpu-svs-e014','a37-suspend-e024v3'])
     a=p.parse_args()
     if not re.fullmatch(r'E[0-9]{3}(?:V[1-9][0-9]*)?',a.tag):raise ValueError('Invalid test tag')
     for root in [ROOT,a.kernel_source]:
@@ -42,14 +45,37 @@ def main():
     tree=base[page+align(ks)+align(rs):page+align(ks)+align(rs)+dt]
     for data,key in [(base[page:page+ks],'kernel_sha256'),(ramdisk,'ramdisk_sha256'),(tree,'dt_sha256')]:
         if hashlib.sha256(data).hexdigest()!=inputs[key]:raise ValueError('Base component differs: '+key)
+    if bool(a.board_dtb) != (a.dt_profile == 'a37-suspend-e024v3'):
+        raise ValueError('The A37 suspend profile requires its matching compiled board DTB')
+    allowed_bases = [inputs['partition_sha256']]
+    if a.also_base:
+        other = a.also_base.read_bytes()
+        if len(other) != len(base) or other[:8] != base[:8]:
+            raise ValueError('Alternate partition layout differs')
+        # Only the kernel size, boot ID and kernel contents may differ.
+        if other[12:576] != base[12:576] or other[608:page] != base[608:page]:
+            raise ValueError('Alternate boot header differs')
+        other_kernel_len = struct.unpack_from('<I', other, 8)[0]
+        rd = page + align(other_kernel_len)
+        dt_offset = rd + align(rs)
+        if (not other_kernel_len or dt_offset + align(dt) > len(other) or
+                other[rd:rd + rs] != ramdisk or other[dt_offset:dt_offset + dt] != tree):
+            raise ValueError('Alternate boot ramdisk or QCDT differs')
+        other_digest = hashlib.sha256(other).hexdigest()
+        if other_digest == allowed_bases[0]:
+            raise ValueError('Duplicate alternate boot partition')
+        allowed_bases.append(other_digest)
     a.output.mkdir(parents=True,exist_ok=False)
     original=a.output/'installed-boot.img';original.write_bytes(base[:end])
     image=a.output/'boot.img'
     result=boot_image(original,a.kernel,image)
     if result['ramdisk_sha256']!=inputs['ramdisk_sha256'] or result['dt_sha256']!=inputs['dt_sha256']:raise ValueError('Boot components changed')
     if a.dt_profile:
-        transform={'a37-low-cpu-12m5':patch_low_cpu_corner,'a37-active-cpu-12m5':patch_active_cpu_floors,'a37-cpu-plan-e011':patch_cpu_plan,'a37-cpu-efficiency-e012':patch_cpu_efficiency_e012,'a37-cpu-targets-e013':patch_cpu_targets_e013,'a37-gpu-svs-e014':patch_gpu_svs_e014}[a.dt_profile]
-        patched,change=transform(tree)
+        transforms={'a37-low-cpu-12m5':patch_low_cpu_corner,'a37-active-cpu-12m5':patch_active_cpu_floors,'a37-cpu-plan-e011':patch_cpu_plan,'a37-cpu-efficiency-e012':patch_cpu_efficiency_e012,'a37-cpu-targets-e013':patch_cpu_targets_e013,'a37-gpu-svs-e014':patch_gpu_svs_e014}
+        if a.dt_profile == 'a37-suspend-e024v3':
+            patched,change = patch_suspend_level(tree, a.board_dtb.read_bytes())
+        else:
+            patched,change = transforms[a.dt_profile](tree)
         data=bytearray(image.read_bytes())
         offset=page+align(len(kernel))+align(rs)
         data[offset:offset+dt]=patched
@@ -60,7 +86,7 @@ def main():
         image.write_bytes(data)
         result.update(sha256=digest(image),dt_sha256=hashlib.sha256(patched).hexdigest(),dt_patch=change)
     (a.output/'boot.sha256').write_text(result['sha256']+'\n')
-    (a.output/'base.sha256').write_text(inputs['partition_sha256']+'\n')
+    (a.output/'base.sha256').write_text('\n'.join(allowed_bases)+'\n')
     script=ROOT/'tools/kernel-test/flash.sh'
     updater='\n'.join([
       f'ui_print("Oppo A37 {a.tag} kernel test; retaining installed Magisk.");',
@@ -82,6 +108,8 @@ def main():
     manifest={'test':a.tag,'kernel_commit':a.kernel_commit,'kernel_sha256':a.kernel_sha,
               'rom_commit':run(['git','-C',ROOT,'rev-parse','HEAD']).stdout.strip(),
               'base':inputs,'boot':result,'archive_bytes':archive.stat().st_size}
+    if a.also_base:
+        manifest['additional_base_sha256'] = allowed_bases[1:]
     (a.output/'build-manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
     print('Built',archive,'('+str(archive.stat().st_size)+' bytes)')
 

@@ -16,11 +16,13 @@ boot_block=/dev/block/bootdevice/by-name/boot
 capacity=$(blockdev --getsize64 "$boot_block")
 image=/tmp/a37-kernel-test/boot.img
 expected=$(cat /tmp/a37-kernel-test/boot.sha256)
-base=$(cat /tmp/a37-kernel-test/base.sha256)
-for value in "$expected" "$base"; do
-    case "$value" in ''|*[!0-9a-f]*) fail 'Invalid verification input.';; esac
-    [ "${#value}" = 64 ] || fail 'Invalid verification length.'
-done
+base_file=/tmp/a37-kernel-test/base.sha256
+validate_digest() {
+    case "$1" in ''|*[!0-9a-f]*) fail 'Invalid verification input.';; esac
+    [ "${#1}" = 64 ] || fail 'Invalid verification length.'
+}
+validate_digest "$expected"
+[ -s "$base_file" ] || fail 'Missing installed boot list.'
 bytes=$(wc -c < "$image")
 [ "$bytes" -gt 2048 ] && [ "$((bytes % 2048))" = 0 ] || fail 'Invalid image length.'
 [ "$bytes" -le "$capacity" ] || fail 'Boot image exceeds partition.'
@@ -34,7 +36,12 @@ if cmp "$image" "$readback" >/dev/null 2>&1; then
     exit 0
 fi
 actual=$(sha256sum "$boot_block")
-[ "${actual%% *}" = "$base" ] || fail 'Boot changed since this test was prepared; repackage it to preserve your current Magisk setup.'
+matched=0
+while IFS= read -r base || [ -n "$base" ]; do
+    validate_digest "$base"
+    if [ "${actual%% *}" = "$base" ]; then matched=1; fi
+done < "$base_file"
+[ "$matched" = 1 ] || fail 'Boot changed since this test was prepared; repackage it to preserve your current Magisk setup.'
 [ "${1:-}" != --check ] || exit 0
 dd if="$image" of="$boot_block" bs=2048 || fail 'Boot write failed.'
 sync || fail 'Boot sync failed.'
